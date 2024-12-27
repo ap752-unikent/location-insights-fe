@@ -75,7 +75,7 @@ export const Main = () => {
                             {...district}
                             yourBudget={weeklyPriceThreshold}
                         />)}
-                        <PaginationRoot
+                        {/* <PaginationRoot
                             count={districts?.length || 0}
                             pageSize={ITEMS_PER_PAGE}
                             page={page}
@@ -84,7 +84,7 @@ export const Main = () => {
                             <PaginationPrevTrigger />
                             <PaginationItems />
                             <PaginationNextTrigger />
-                        </PaginationRoot>
+                        </PaginationRoot> */}
                     </Stack>
                 </Tabs.Content>
                 <Tabs.Content value="questionnaire">
@@ -103,7 +103,7 @@ export const Main = () => {
                             backgroundColor="secondary"
                             width={150}
                        >
-                            See your results, force release {`>`}
+                            See your results {`>`}
                        </Button>
                     </Stack>
                 </Tabs.Content>
