@@ -35,4 +35,5 @@ jobs:
           az storage blob upload-batch \
             --source ./build \
             --destination '$web' \
-            --blob-url "${{ secrets.AZURE_BLOB_CTR_URL }}" \
+            --blob-endpoint "${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}" \
+            --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN }}"
