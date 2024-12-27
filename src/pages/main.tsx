@@ -33,7 +33,7 @@ export const Main = () => {
     const [currentTab, setCurrentTab] = useState<"questionnaire" | "results">("questionnaire");
     const [page, setPage] = useState(1);
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
-    const { districts, districtsLoading } = useFetchBestDistrict({ parksAndNatureImportance: parksAndNature, transportLinksImportance: transportLinks, convenienceStoresImportance: convenienceStores, crimeImportance: 10, nightlifeImportance: nightlife, weeklyPriceThreshold: weeklyPriceThreshold });
+    const { districts, districtsLoading } = useFetchBestDistrict({ parksAndNatureImportance: parksAndNature, transportLinksImportance: transportLinks, convenienceStoresImportance: convenienceStores, crimeImportance: safety, nightlifeImportance: nightlife, weeklyPriceThreshold: weeklyPriceThreshold });
 
     const displayStartIndex = useMemo(() => (page - 1) * ITEMS_PER_PAGE, [page]);
     const displayEndIndex = useMemo(() => page * ITEMS_PER_PAGE, [page]);

@@ -35,7 +35,7 @@ export const LocationResult = ({
 
     useEffect(() => {
         setElementWidth(ref.current?.clientWidth || 0);
-    })
+    }, []);
 
     return (
         <Stack

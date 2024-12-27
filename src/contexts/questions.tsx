@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode, useReducer } from 'react';
-import { Question, questions } from '../constants';
+import React, { createContext, useContext, ReactNode, useReducer } from 'react';
+import { questions } from '../constants';
 
 type State = {
     questionsAnswers: QuestionAnswer[],

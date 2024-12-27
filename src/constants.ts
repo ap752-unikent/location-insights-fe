@@ -1,5 +1,3 @@
-import Q from "q";
-
 export type Question = {
     id: string,
     question: string,

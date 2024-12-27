@@ -54,7 +54,7 @@ export const fetchBestLocation = async ({
     weeklyPriceThreshold,
 }: FetchBestLocationProps) => {
 
-    const url = `http://localhost:8083/location?parksAndNatureImportance=${parksAndNatureImportance}&transportLinksImportance=${transportLinksImportance}&nightlifeImportance=${nightlifeImportance}&convenienceStoresImportance=${convenienceStoresImportance}&crimeImportance=${crimeImportance}&weeklyPriceThreshold=${weeklyPriceThreshold}`
+    const url = `https://backend-public-api-gohoushare-dev-f2d8hmatbsa2hte5.uksouth-01.azurewebsites.net/location?parksAndNatureImportance=${parksAndNatureImportance}&transportLinksImportance=${transportLinksImportance}&nightlifeImportance=${nightlifeImportance}&convenienceStoresImportance=${convenienceStoresImportance}&crimeImportance=${crimeImportance}&weeklyPriceThreshold=${weeklyPriceThreshold}`
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;
