@@ -1,0 +1,40 @@
+name: Deploy React App to Azure Static Website
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.11.0'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build React App
+      run: npm run build
+
+    - name: Deploy to Azure Blob Storage
+      env:
+        AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
+        AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
+      run: |
+        # Install Azure CLI
+        curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+        # Upload files to the $web container using SAS token
+        az storage blob upload-batch \
+          --source ./build \
+          --destination '$web' \
+          --account-url "$AZURE_STORAGE_ACCOUNT_URL" \
+          --sas-token "$AZURE_STORAGE_SAS_TOKEN"
