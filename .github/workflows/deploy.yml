@@ -28,6 +28,7 @@ jobs:
       env:
         AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
         AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
+        CI: false
       run: |
         # Install Azure CLI
         curl -sL https://aka.ms/InstallAzureCLIDeb | bash
