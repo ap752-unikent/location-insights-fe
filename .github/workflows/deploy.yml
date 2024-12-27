@@ -22,6 +22,8 @@ jobs:
       run: npm install
 
     - name: Build React App
+      env:
+        CI: false
       run: npm run build
 
     - name: Install Azure CLI
@@ -30,14 +32,13 @@ jobs:
         azcliversion: latest
 
     - name: Deploy to Azure Blob Storage
-      env:
-        AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
-        AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
-        CI: false
-      run: |
-        # Upload files to the $web container using SAS token
-        az storage blob upload-batch \
-          --source ./build \
-          --destination '$web' \
-          --account-url "$AZURE_STORAGE_ACCOUNT_URL" \
-          --sas-token "$AZURE_STORAGE_SAS_TOKEN"
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          # Upload files to Azure Blob Storage using SAS token
+          az storage blob upload-batch \
+            --source ./build \
+            --destination '$web' \
+            --account-url "${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}" \
+            --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN }}"
