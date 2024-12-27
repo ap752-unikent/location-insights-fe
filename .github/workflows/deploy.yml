@@ -25,14 +25,14 @@ jobs:
       run: npm run build
 
     - name: Deploy to Azure Blob Storage
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
       env:
         AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
         AZURE_STORAGE_SAS_TOKEN: ${{ secrets.AZURE_STORAGE_SAS_TOKEN }}
         CI: false
       run: |
-        # Install Azure CLI
-        curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
         # Upload files to the $web container using SAS token
         az storage blob upload-batch \
           --source ./build \
