@@ -26,13 +26,8 @@ jobs:
         CI: false
       run: npm run build
 
-    - name: Install Azure CLI
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-
     - name: Deploy to Azure Blob Storage
-      uses: azure/CLI@v1
+      uses: azure/cli@v2
       with:
         azcliversion: latest
         inlineScript: |
