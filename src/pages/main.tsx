@@ -103,7 +103,7 @@ export const Main = () => {
                             backgroundColor="secondary"
                             width={150}
                        >
-                            See your results {`>`}
+                            See your results, force release {`>`}
                        </Button>
                     </Stack>
                 </Tabs.Content>
@@ -111,5 +111,3 @@ export const Main = () => {
         </Stack>
     )
 }
-
-//force release
