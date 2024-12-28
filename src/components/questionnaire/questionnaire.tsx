@@ -15,6 +15,14 @@ export const Questionnaire = ({
     allQuestionsAnswered
 } : Props) => {
 
+    const handleClick = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        setCurrentTab("results");
+    }
+
     return (
         <Stack
             direction={"column"}
@@ -25,7 +33,7 @@ export const Questionnaire = ({
                 questions.map((question) => <Question key={question.id} {...question} />)
             }
             <Button
-                onClick={() => setCurrentTab("results")}
+                onClick={handleClick}
                 disabled={!allQuestionsAnswered}
                 borderRadius={4}
                 backgroundColor="secondary"
