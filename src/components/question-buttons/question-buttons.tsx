@@ -1,4 +1,4 @@
-import { Button, Stack } from "@chakra-ui/react"
+import { Button, Stack, useBreakpointValue } from "@chakra-ui/react"
 
 
 type Props = {
@@ -18,10 +18,12 @@ export const QuestionButtons = (
     } : Props
 ) => {
 
+    const isSmallScreen = useBreakpointValue({ base: true, md: false });
+
     return (
         <Stack
             borderRadius={8}
-            direction={"row"}
+            direction={isSmallScreen ? "column" : "row"}
             width={"100%"}
             gap={1}
         >

@@ -1,25 +1,22 @@
-import { LocationResult } from "../components/location-result/location-result";
 import { useFetchBestDistrict } from "../hooks/use-fetch-best-location";
-import { Stack, Text, useBreakpointValue, Tabs, Button } from "@chakra-ui/react"
-import {
-    PaginationItems,
-    PaginationNextTrigger,
-    PaginationPrevTrigger,
-    PaginationRoot,
-} from "../components/ui/pagination";
+import { Stack, useBreakpointValue, Tabs } from "@chakra-ui/react"
 import "@fontsource/inter";
 import { useMemo, useState } from "react";
-import { Question } from "../components/question/question";
 import { questions } from "../constants";
 import { useQuestionsAnswersContext } from "../contexts/questions";
 import { useQuestionAnswersScores } from "../hooks/use-question-answers-scores";
+import { Results } from "../components/results/results";
+import { Questionnaire } from "../components/questionnaire/questionnaire";
+import { useDebounce } from 'use-debounce';
 
-const ITEMS_PER_PAGE = 5;
-const weeklyPriceThreshold = 250;
+export type TabType = "questionnaire" | "results";
 
 export const Main = () => {
 
-    const { state: { questionsAnswers }} = useQuestionsAnswersContext();
+    const [budgetMonthly, setBudgetMonthly] = useState(1000);
+    const [budgetMonthlyDebounced] = useDebounce(budgetMonthly, 1000);
+    const { state: { questionsAnswers } } = useQuestionsAnswersContext();
+    const weeklyPriceThreshold = useMemo(() => budgetMonthlyDebounced / 4, [budgetMonthlyDebounced]);
 
     const allQuestionsAnswered = useMemo(() => questionsAnswers.length === questions.length, [questionsAnswers]);
     const {
@@ -30,13 +27,9 @@ export const Main = () => {
         safety
     } = useQuestionAnswersScores({ questionAnswers: questionsAnswers });
 
-    const [currentTab, setCurrentTab] = useState<"questionnaire" | "results">("questionnaire");
-    const [page, setPage] = useState(1);
+    const [currentTab, setCurrentTab] = useState<TabType>("questionnaire");
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const { districts, districtsLoading } = useFetchBestDistrict({ parksAndNatureImportance: parksAndNature, transportLinksImportance: transportLinks, convenienceStoresImportance: convenienceStores, crimeImportance: safety, nightlifeImportance: nightlife, weeklyPriceThreshold: weeklyPriceThreshold });
-
-    const displayStartIndex = useMemo(() => (page - 1) * ITEMS_PER_PAGE, [page]);
-    const displayEndIndex = useMemo(() => page * ITEMS_PER_PAGE, [page]);
 
     return (
         <Stack
@@ -64,48 +57,20 @@ export const Main = () => {
                     </Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="results">
-                    <Stack
-                        direction={"column"}
-                        width={"100%"}
-                        gap={4}
-                    >
-                        {districtsLoading && <Text>Loading...</Text>}
-                        {districts && districts.slice(displayStartIndex, displayEndIndex).map((district) => <LocationResult
-                            key={district.district}
-                            {...district}
-                            yourBudget={weeklyPriceThreshold}
-                        />)}
-                        <PaginationRoot
-                            count={districts?.length || 0}
-                            pageSize={ITEMS_PER_PAGE}
-                            page={page}
-                            onPageChange={(details) => setPage(details.page)}
-                        >
-                            <PaginationPrevTrigger />
-                            <PaginationItems />
-                            <PaginationNextTrigger />
-                        </PaginationRoot>
-                    </Stack>
+                    <Results 
+                        districts={districts}
+                        districtsLoading={districtsLoading}
+                        budgetMonthly={budgetMonthly}
+                        setBudgetMonthly={setBudgetMonthly}
+                        weeklyPriceThreshold={weeklyPriceThreshold}
+                    />
                 </Tabs.Content>
                 <Tabs.Content value="questionnaire">
-                    <Stack
-                        direction={"column"}
-                        width={"100%"}
-                        gap={12}
-                    >
-                       {
-                            questions.map((question) => <Question key={question.id} {...question} />)
-                       }
-                       <Button
-                            onClick={() => setCurrentTab("results")}
-                            disabled={!allQuestionsAnswered}
-                            borderRadius={4}
-                            backgroundColor="secondary"
-                            width={150}
-                       >
-                            See your results {`>`}
-                       </Button>
-                    </Stack>
+                    <Questionnaire 
+                        questions={questions}
+                        setCurrentTab={setCurrentTab}
+                        allQuestionsAnswered={allQuestionsAnswered}
+                    />
                 </Tabs.Content>
             </Tabs.Root>
         </Stack>
