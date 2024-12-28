@@ -52,7 +52,7 @@ export const Results = ({
                     width={isSmallScreen ? "100%" : "50%"}
                     variant={"outline"}
                     min={400}
-                    max={2000}
+                    max={3000}
                     step={50}
                 />
             </Stack>
