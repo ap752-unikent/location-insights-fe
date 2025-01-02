@@ -5,6 +5,7 @@ import {
   ColorModeProvider,
   type ColorModeProviderProps,
 } from "./color-mode"
+import "@fontsource/inter";
 
 const customConfig = defineConfig({
   theme: {
@@ -24,7 +25,7 @@ const customConfig = defineConfig({
           100: { value: "#EE0F0F" },
         },
       },
-    },
+    }
   },
 })
 
@@ -32,7 +33,9 @@ const customSystem = createSystem(defaultConfig, customConfig)
 
 export function Provider(props: ColorModeProviderProps) {
   return (
-    <ChakraProvider value={customSystem}>
+    <ChakraProvider
+      value={customSystem}
+    >
       <ColorModeProvider {...props} />
     </ChakraProvider>
   )

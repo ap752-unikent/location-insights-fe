@@ -34,7 +34,7 @@ export type DistrictData = {
     parksAndNatureScore: number,
     transportLinksScore: number,
     nightlifeScore: number,
-    convenienceStoresScore: number,
+    convenienceScore: number,
     crimeScore: number,
     price: {
         average: number;
@@ -54,7 +54,22 @@ export const fetchBestLocation = async ({
     weeklyPriceThreshold,
 }: FetchBestLocationProps) => {
 
-    const url = `https://backend-public-api-gohoushare-dev-f2d8hmatbsa2hte5.uksouth-01.azurewebsites.net/location?parksAndNatureImportance=${parksAndNatureImportance}&transportLinksImportance=${transportLinksImportance}&nightlifeImportance=${nightlifeImportance}&convenienceStoresImportance=${convenienceStoresImportance}&crimeImportance=${crimeImportance}&weeklyPriceThreshold=${weeklyPriceThreshold}`
+    const url = `http://localhost:8083/location?parksAndNatureImportance=${parksAndNatureImportance}&transportLinksImportance=${transportLinksImportance}&nightlifeImportance=${nightlifeImportance}&convenienceStoresImportance=${convenienceStoresImportance}&crimeImportance=${crimeImportance}&weeklyPriceThreshold=${weeklyPriceThreshold}`
+    const responseJson = await apiClient({ url, method: 'GET' });
+
+    return responseJson;
+}
+
+//need to use env vars here
+export const fetchDistrictInsights = async (district: string) => {
+    const url = `http://localhost:8083/district/${district}`
+    const responseJson = await apiClient({ url, method: 'GET' });
+
+    return responseJson;
+}
+
+export const fetchAggregates = async () => {
+    const url = `http://localhost:8083/aggregates`
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;

@@ -6,7 +6,7 @@ type ScoreProps = {
     label: string;
 }
 
-type Props = { scores: ScoreProps[]; width: number }
+type Props = { scores: ScoreProps[]; width: number | string }
 
 export const IndividualScores = ({ scores, width}: Props) => {
 
@@ -15,7 +15,7 @@ export const IndividualScores = ({ scores, width}: Props) => {
             direction={"column"}
             gap={2}
             marginTop={2}
-            width={width / 2}
+            width={"50%"}
         >
             {scores.map((score, index) => (
                 <IndividualScore key={index} {...score} />

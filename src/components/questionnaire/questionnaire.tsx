@@ -2,6 +2,7 @@ import { Question as QuestionType} from "../../constants";
 import { Button, Stack } from "@chakra-ui/react"
 import { Question } from "../question/question";
 import { TabType } from "../../pages/main";
+import { MdArrowForward } from "react-icons/md"
 
 type Props = {
     questions: QuestionType[]
@@ -16,11 +17,11 @@ export const Questionnaire = ({
 } : Props) => {
 
     const handleClick = () => {
+        setCurrentTab("results");
         window.scrollTo({
             top: 0,
             behavior: 'smooth',
           });
-        setCurrentTab("results");
     }
 
     return (
@@ -33,13 +34,13 @@ export const Questionnaire = ({
                 questions.map((question) => <Question key={question.id} {...question} />)
             }
             <Button
+                bgColor={"secondary"}
                 onClick={handleClick}
                 disabled={!allQuestionsAnswered}
                 borderRadius={4}
-                backgroundColor="secondary"
                 width={150}
             >
-                See your results {`>`}
+                See your results <MdArrowForward />
             </Button>
         </Stack>
     )

@@ -2,10 +2,13 @@ import { DistrictData } from "../../utils/api-client"
 import { Stack, Text, useBreakpointValue } from "@chakra-ui/react"
 import { getProgressColor } from "../../utils/color"
 import { ProgressBar } from "../progress/progress-bar"
-import { PriceChart } from "./price-chart"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { RangeChart } from "./range-chart"
+import { useMemo } from "react"
 import { IndividualScores } from "./individual-scores"
-import { Heading } from "./heading"
+import { Button } from "../ui/button"
+import { MdArrowForward } from "react-icons/md"
+import { LocationResultSkeleton } from "../location-result-skeleton/location-result-skeleton"
+import { useNavigate } from "react-router-dom"
 
 type Props = DistrictData & {
     yourBudget: number;
@@ -15,7 +18,7 @@ export const LocationResult = ({
     district,
     parksAndNatureScore,
     transportLinksScore,
-    convenienceStoresScore,
+    convenienceScore,
     crimeScore,
     nightlifeScore,
     normalizedScore,
@@ -23,30 +26,24 @@ export const LocationResult = ({
     yourBudget
 }: Props) => {
 
-    const [elementWidth, setElementWidth] = useState(0);
+    const navigate = useNavigate();
     const color = useMemo(() => getProgressColor(normalizedScore), [normalizedScore]);
     const { min, max } = price;
-    const ref = useRef<HTMLDivElement>(null);
 
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const padding = useBreakpointValue({ base: "8px 12px", md: "16px 24px" });
     const progressBarHeight = useBreakpointValue({ base: 8, md: 12 });
     const compatibilityTextSize = useBreakpointValue({ base: "10px", md: "xs" });
 
-    useEffect(() => {
-        setElementWidth(ref.current?.clientWidth || 0);
-    }, []);
+    const handleViewDetails = () => {
+        navigate(`/location-analysis/${district}`);
+    }
 
     return (
-        <Stack
-            backgroundColor="background"
-            borderRadius={8}
-            boxShadow={"md"}
-            ref={ref}
-        >
-            <Heading district={district} />
+        <LocationResultSkeleton district={district}>
             <Stack
                 padding={padding}
+                paddingBottom={0}
             >
                 <Text
                     fontSize={compatibilityTextSize}
@@ -56,19 +53,22 @@ export const LocationResult = ({
                 >
                     Compatibility score: {(normalizedScore * 100).toFixed(0)}
                 </Text>
-                <ProgressBar 
-                    value={normalizedScore} 
-                    color={color} 
+                <ProgressBar
+                    value={normalizedScore}
+                    color={color}
                     height={progressBarHeight}
                 />
                 <Stack
                     direction={"row"}
                     justifyContent={"space-between"}
                 >
-                    <PriceChart
-                        yourBudget={yourBudget}
-                        min={min}
-                        max={max}
+                    <RangeChart
+                        bottomValue={yourBudget * 4}
+                        min={min * 4}
+                        max={max * 4}
+                        bottomYLabel="Your budget"
+                        topYLabel="Rent"
+                        unit="£"
                     />
                     {
                         !isSmallScreen && (
@@ -78,17 +78,30 @@ export const LocationResult = ({
                                     scores={[
                                         { score: parksAndNatureScore, label: "Parks & Nature" },
                                         { score: transportLinksScore, label: "Transport Links" },
-                                        { score: convenienceStoresScore, label: "Convenience" },
+                                        { score: convenienceScore, label: "Convenience" },
                                         { score: crimeScore, label: "Safety" },
                                         { score: nightlifeScore, label: "Nightlife" }
                                     ]}
-                                    width={elementWidth - 32}
+                                    width={"75%"}
                                 />
                             </>
                         )
                     }
                 </Stack>
             </Stack>
-        </Stack>
+            <Button
+                width={140}
+                alignSelf={"flex-end"}
+                variant={"plain"}
+                color={"blackAlpha.700"}
+                fontWeight={"bold"}
+                fontSize={"xs"}
+                marginBottom={2}
+                marginRight={2}
+                onClick={handleViewDetails}
+            >
+                View more details <MdArrowForward />
+            </Button>
+        </LocationResultSkeleton>
     )
 }

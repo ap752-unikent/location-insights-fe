@@ -3,21 +3,35 @@ import "@fontsource/inter";
 import { useBreakpointValue, useToken } from "@chakra-ui/react";
 
 type Props = {
-    min: number;
+    min?: number;
     max: number;
-    yourBudget: number;
+    bottomYLabel?: string;
+    topYLabel: string;
+    bottomValue?: number;
+    unit: string;
+    top?: number;
+    width?: string | number;
+    height?: number;
+    left?: number;
 }
 
-const yMapping = {
-    1: "Your Budget",
-    2: "Rent",
-};
-
-export const PriceChart = ({
+export const RangeChart = ({
     min,
     max,
-    yourBudget
+    bottomValue: yourBudget,
+    bottomYLabel,
+    topYLabel,
+    unit,
+    top = 20,
+    width = "110%",
+    height = 140,
+    left = 12,
 }: Props) => {
+
+    const yMapping = {
+        1: bottomYLabel,
+        2: topYLabel,
+    };
 
     const [primary, secondary] = useToken("colors", ["primary", "secondary"]);
     const priceRangeData = [
@@ -41,32 +55,39 @@ export const PriceChart = ({
     const chartFontSize = useBreakpointValue({ base: "10px", md: "12px" });
 
     return (
-        <ResponsiveContainer width="100%" height={140}>
+        <ResponsiveContainer
+            width={width}
+            height={height}
+            style={{
+                marginLeft: -left,
+                fontSize: chartFontSize,
+                fontFamily: "Inter",
+                fontWeight: 800,
+            }}
+        >
             <ScatterChart
-                style={{
-                    fontSize: chartFontSize,
-                    fontFamily: "Inter",
-                    fontWeight: 800
-                }}
-                height={140}
                 margin={{
-                    top: 20,
+                    top: top,
                     right: 20,
-                    left: -12,
+                    left: -left,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="x" type="number" name="rent" unit="£" />
+                <XAxis dataKey="x" type="number" unit={unit} />
                 <YAxis
                     dataKey="y"
                     type="number"
-                    ticks={[1, 2]}
+                    ticks={yourBudget ? [1, 2] : [2]}
                     // @ts-ignore
                     tickFormatter={(tick) => yMapping[tick]}
                 />
                 <Tooltip cursor={{ strokeDasharray: "3 3" }} />
                 <Scatter data={priceRangeData} fill={primary} line />
-                <Scatter data={yourBudgetData} fill={secondary} />
+                {
+                    yourBudget && (
+                        <Scatter data={yourBudgetData} fill={secondary} />
+                    )
+                }
             </ScatterChart>
         </ResponsiveContainer>
     )
