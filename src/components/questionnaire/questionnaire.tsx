@@ -1,23 +1,24 @@
 import { Question as QuestionType} from "../../constants";
 import { Button, Stack } from "@chakra-ui/react"
 import { Question } from "../question/question";
-import { TabType } from "../../pages/main";
+import { TabType } from "../../types";
 import { MdArrowForward } from "react-icons/md"
+import { PageState } from "../../contexts/page-state";
 
 type Props = {
     questions: QuestionType[]
-    setCurrentTab: (tab: TabType) => void
     allQuestionsAnswered: boolean
+    updateState: (newState: Partial<PageState>) => void
 }
 
 export const Questionnaire = ({
     questions,
-    setCurrentTab,
-    allQuestionsAnswered
+    allQuestionsAnswered,
+    updateState
 } : Props) => {
 
     const handleClick = () => {
-        setCurrentTab("results");
+        updateState({ pageNumber: 1, activeTab: 'results' });
         window.scrollTo({
             top: 0,
             behavior: 'smooth',

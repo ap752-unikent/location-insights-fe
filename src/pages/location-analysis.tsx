@@ -1,16 +1,18 @@
-import { Stack, useBreakpointValue, Text } from "@chakra-ui/react"
+import { Stack, useBreakpointValue, Text, Button } from "@chakra-ui/react"
 import { LatLng } from "leaflet"
 import { AnalysisMap } from "../components/analysis-map/analysis-map";
 import { LocationResultSkeleton } from "../components/location-result-skeleton/location-result-skeleton";
 import { useFetchDistrictInsights } from "../hooks/use-fetch-district-insights";
 import { ParksAndNature } from "../components/summaries/parks-and-nature/parks-and-nature";
 import { TransportLinks } from "../components/summaries/transport-links/transport-links";
-import { useParams } from "react-router"
+import { useLocation, useNavigate, useParams} from "react-router"
 import { Nightlife } from "../components/summaries/nightlife/nightlife";
 import { RangeChart } from "../components/location-result/range-chart";
 import { Crime } from "../components/summaries/crime/crime";
 import { useFetchAggregates } from "../hooks/use-fetch-aggregates";
 import { Convenience } from "../components/summaries/convenience/convenience";
+import { MdArrowBack } from "react-icons/md"
+import { useEffect } from "react";
 
 export const LocationAnalysis = () => {
 
@@ -18,6 +20,12 @@ export const LocationAnalysis = () => {
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const { districtData } = useFetchDistrictInsights({ district });
     const { aggregates } = useFetchAggregates();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location]);
 
     const prices = [
         districtData?.center.averageWeeklyPricePerRoom ?? 0,
@@ -39,6 +47,25 @@ export const LocationAnalysis = () => {
             marginBottom={24}
             fontFamily={"Inter"}
         >
+            <Text
+                fontSize={"xs"}
+                fontWeight={"bold"}
+                color={"gray.500"}
+                onClick={() => navigate(-1)}
+                cursor={"pointer"}
+                alignSelf={"flex-start"}
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                }}
+            >
+              <MdArrowBack
+                style={{
+                    marginRight: "4px"
+                }}
+                size={16}
+              />   Return to results
+            </Text>
             <LocationResultSkeleton
                 district={district ?? ""}
             >

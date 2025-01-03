@@ -9,6 +9,7 @@ import { Button } from "../ui/button"
 import { MdArrowForward } from "react-icons/md"
 import { LocationResultSkeleton } from "../location-result-skeleton/location-result-skeleton"
 import { useNavigate } from "react-router-dom"
+import { usePageState } from "../../contexts/page-state"
 
 type Props = DistrictData & {
     yourBudget: number;
@@ -28,6 +29,7 @@ export const LocationResult = ({
 
     const navigate = useNavigate();
     const color = useMemo(() => getProgressColor(normalizedScore), [normalizedScore]);
+    const { updateState } = usePageState();
     const { min, max } = price;
 
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
@@ -36,6 +38,7 @@ export const LocationResult = ({
     const compatibilityTextSize = useBreakpointValue({ base: "10px", md: "xs" });
 
     const handleViewDetails = () => {
+        updateState({scrollPosition: window.scrollY});
         navigate(`/location-analysis/${district}`);
     }
 

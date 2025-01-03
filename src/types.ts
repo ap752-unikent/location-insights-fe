@@ -98,3 +98,5 @@ export type DistrictData = {
 
     }
 }
+
+export type TabType = "questionnaire" | "results";

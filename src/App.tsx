@@ -9,6 +9,7 @@ import {
   Routes,
 } from "react-router-dom";
 import { LocationAnalysis } from './pages/location-analysis';
+import { PageStateProvider } from './contexts/page-state';
 
 const queryClient = new QueryClient();
 
@@ -16,14 +17,16 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraUIProvider>
-        <QuestionsAnswerProvider>
-          <Router>
-            <Routes>
-              <Route path='/' element={<Main />} />
-              <Route path='/location-analysis/:district' element={<LocationAnalysis />} />
-            </Routes>
-          </Router>
-        </QuestionsAnswerProvider>
+        <PageStateProvider>
+          <QuestionsAnswerProvider>
+            <Router>
+              <Routes>
+                <Route path='/' element={<Main />} />
+                <Route path='/location-analysis/:district' element={<LocationAnalysis />} />
+              </Routes>
+            </Router>
+          </QuestionsAnswerProvider>
+        </PageStateProvider>
       </ChakraUIProvider>
     </QueryClientProvider>
   );

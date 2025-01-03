@@ -4,6 +4,7 @@ import { PaginationItems, PaginationNextTrigger, PaginationPrevTrigger, Paginati
 import { DistrictData } from "../../utils/api-client";
 import { useMemo, useState } from "react";
 import { LocationResult } from "../location-result/location-result";
+import { usePageState } from "../../contexts/page-state";
 
 type Props = {
     districts: DistrictData[] | undefined;
@@ -23,10 +24,19 @@ export const Results = ({
     setBudgetMonthly
 } : Props) => {
 
+    const { state : {pageNumber}, updateState } = usePageState();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
-    const [page, setPage] = useState(1);
-    const displayStartIndex = useMemo(() => (page - 1) * ITEMS_PER_PAGE, [page]);
-    const displayEndIndex = useMemo(() => page * ITEMS_PER_PAGE, [page]);
+
+    const handleSetPage = (newPage: number) => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+        updateState({ pageNumber: newPage });
+    }
+
+    const displayStartIndex = useMemo(() => (pageNumber - 1) * ITEMS_PER_PAGE, [pageNumber]);
+    const displayEndIndex = useMemo(() => pageNumber * ITEMS_PER_PAGE, [pageNumber]);
 
     return (
         <Stack
@@ -65,8 +75,8 @@ export const Results = ({
             <PaginationRoot
                 count={districts?.length || 0}
                 pageSize={ITEMS_PER_PAGE}
-                page={page}
-                onPageChange={(details) => setPage(details.page)}
+                page={pageNumber}
+                onPageChange={(details) => handleSetPage(details.page)}
             >
                 <PaginationPrevTrigger />
                 <PaginationItems />

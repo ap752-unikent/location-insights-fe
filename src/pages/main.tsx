@@ -1,22 +1,29 @@
 import { useFetchBestDistrict } from "../hooks/use-fetch-best-location";
 import { Stack, useBreakpointValue, Tabs } from "@chakra-ui/react"
 import "@fontsource/inter";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { questions } from "../constants";
 import { useQuestionsAnswersContext } from "../contexts/questions";
 import { useQuestionAnswersScores } from "../hooks/use-question-answers-scores";
 import { Results } from "../components/results/results";
 import { Questionnaire } from "../components/questionnaire/questionnaire";
 import { useDebounce } from 'use-debounce';
-
-export type TabType = "questionnaire" | "results";
+import { TabType } from "../types";
+import { usePageState } from "../contexts/page-state";
+import { useLocation } from "react-router-dom";
 
 export const Main = () => {
 
     const [budgetMonthly, setBudgetMonthly] = useState(1000);
     const [budgetMonthlyDebounced] = useDebounce(budgetMonthly, 1000);
+    const { state: { activeTab, scrollPosition}, updateState } = usePageState();
     const { state: { questionsAnswers } } = useQuestionsAnswersContext();
     const weeklyPriceThreshold = useMemo(() => budgetMonthlyDebounced / 4, [budgetMonthlyDebounced]);
+    const location = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, scrollPosition);
+    }, [location, scrollPosition]);
 
     const allQuestionsAnswered = useMemo(() => questionsAnswers.length === questions.length, [questionsAnswers]);
     const {
@@ -27,9 +34,12 @@ export const Main = () => {
         safety
     } = useQuestionAnswersScores({ questionAnswers: questionsAnswers });
 
-    const [currentTab, setCurrentTab] = useState<TabType>("questionnaire");
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const { districts, districtsLoading } = useFetchBestDistrict({ parksAndNatureImportance: parksAndNature, transportLinksImportance: transportLinks, convenienceStoresImportance: convenienceStores, crimeImportance: safety, nightlifeImportance: nightlife, weeklyPriceThreshold: weeklyPriceThreshold });
+
+    const handleTabChange = (newTab: TabType) => {
+        updateState({ activeTab: newTab });
+    }
 
     return (
         <Stack
@@ -44,8 +54,8 @@ export const Main = () => {
                 width={"100%"}
                 variant={"enclosed"}
                 defaultValue={"questionnaire"}
-                onValueChange={(details) => setCurrentTab(details.value as any)}
-                value={currentTab}
+                onValueChange={(details) => handleTabChange(details.value as TabType)}
+                value={activeTab}
                 lazyMount={true}
             >
                 <Tabs.List>
@@ -57,7 +67,7 @@ export const Main = () => {
                     </Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="results">
-                    <Results 
+                    <Results
                         districts={districts}
                         districtsLoading={districtsLoading}
                         budgetMonthly={budgetMonthly}
@@ -66,10 +76,10 @@ export const Main = () => {
                     />
                 </Tabs.Content>
                 <Tabs.Content value="questionnaire">
-                    <Questionnaire 
+                    <Questionnaire
                         questions={questions}
-                        setCurrentTab={setCurrentTab}
                         allQuestionsAnswered={allQuestionsAnswered}
+                        updateState={updateState}
                     />
                 </Tabs.Content>
             </Tabs.Root>
