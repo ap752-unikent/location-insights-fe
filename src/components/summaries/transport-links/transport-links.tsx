@@ -84,12 +84,12 @@ export const TransportLinks = ({
                         >
                             <IoIosPartlySunny
                                 color={"gray.500"}
-                                size={32}
+                                size={40}
                                 style={{
                                     marginRight: "12px"
                                 }}
                             />
-                            Planning to commute often? The average travel time from {district} is {averageCommuteTimeToCentralLondon.toFixed(0)} minutes during peak hours.
+                            Planning to commute often? The average travel time from {district} to Central London is {averageCommuteTimeToCentralLondon.toFixed(0)} minutes during peak hours.
                         </Text>
                     }
                     {

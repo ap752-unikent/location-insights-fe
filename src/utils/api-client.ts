@@ -1,3 +1,5 @@
+import { getConfig } from './config';
+
 type ApiClientProps = {
     url: string,
     method: string,
@@ -54,7 +56,7 @@ export const fetchBestLocation = async ({
     weeklyPriceThreshold,
 }: FetchBestLocationProps) => {
 
-    const url = `http://localhost:8083/location?parksAndNatureImportance=${parksAndNatureImportance}&transportLinksImportance=${transportLinksImportance}&nightlifeImportance=${nightlifeImportance}&convenienceStoresImportance=${convenienceStoresImportance}&crimeImportance=${crimeImportance}&weeklyPriceThreshold=${weeklyPriceThreshold}`
+    const url = `${getConfig("API_URL")}/location?parksAndNatureImportance=${parksAndNatureImportance}&transportLinksImportance=${transportLinksImportance}&nightlifeImportance=${nightlifeImportance}&convenienceStoresImportance=${convenienceStoresImportance}&crimeImportance=${crimeImportance}&weeklyPriceThreshold=${weeklyPriceThreshold}`
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;
@@ -62,14 +64,14 @@ export const fetchBestLocation = async ({
 
 //need to use env vars here
 export const fetchDistrictInsights = async (district: string) => {
-    const url = `http://localhost:8083/district/${district}`
+    const url = `${getConfig("API_URL")}/district/${district}`
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;
 }
 
 export const fetchAggregates = async () => {
-    const url = `http://localhost:8083/aggregates`
+    const url = `${getConfig("API_URL")}/aggregates`
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;
