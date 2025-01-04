@@ -69,6 +69,10 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: build
+        path: ./build
+
+    - name: Debug Downloaded Build Directory
+      run: ls -R ./build
 
     - name: Deploy to Azure Blob Storage PROD
       uses: azure/cli@v2
