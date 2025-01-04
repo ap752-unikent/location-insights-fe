@@ -89,7 +89,7 @@ export const TransportLinks = ({
                                     marginRight: "12px"
                                 }}
                             />
-                            Planning to commute often? The average travel time from {district} to Central London is {averageCommuteTimeToCentralLondon.toFixed(0)} minutes during peak hours.
+                            Planning to commute often? The average travel time from {district} to Central London, via public transport, is {averageCommuteTimeToCentralLondon.toFixed(0)} minutes during peak hours.
                         </Text>
                     }
                     {
@@ -109,7 +109,7 @@ export const TransportLinks = ({
                                     marginRight: "12px"
                                 }}
                             />
-                            Enjoy going out out? Average travel time from Central London at night is {averageTransitTimeFromCentralLondonNight.toFixed(0)} minutes.
+                            Enjoy going out out? Average travel time from Central London, via public transport, at night is {averageTransitTimeFromCentralLondonNight.toFixed(0)} minutes.
                         </Text>
                     }
                 </Stack>

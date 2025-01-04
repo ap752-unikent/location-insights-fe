@@ -6,9 +6,8 @@ on:
       - main  # Trigger on pushes to the main branch
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -25,6 +24,22 @@ jobs:
       env:
         CI: false
       run: npm run build
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build
+        path: ./build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: prod  # Reference the prod environment
+    steps:
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build
 
     - name: Deploy to Azure Blob Storage
       uses: azure/cli@v2

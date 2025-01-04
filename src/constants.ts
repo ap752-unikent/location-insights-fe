@@ -19,7 +19,7 @@ export const QUESTION_IDS = {
 export const questions : Question[] = [
     {
         id: QUESTION_IDS.parksAndNature,
-        question: "How often do you expect to visit parks, green spaces, or natural areas nearby?",
+        question: "How often do you expect to visit parks, green spaces, or natural areas in your neighbourhood?",
         options: [
             {
                 value: 4,
