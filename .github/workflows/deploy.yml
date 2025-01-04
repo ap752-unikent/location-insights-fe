@@ -39,7 +39,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: build
-        path: ~
+      run: ls -R
 
     - name: Deploy to Azure Blob Storage DEV
       uses: azure/cli@v2
