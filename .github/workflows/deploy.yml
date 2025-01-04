@@ -51,7 +51,7 @@ jobs:
             --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN }}"
 
           az storage blob upload-batch \
-            --source ./build \ 
+            --source ./build \
             --destination '$web' \
             --blob-endpoint "${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}" \
             --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN }}"
@@ -77,7 +77,7 @@ jobs:
             --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN_PROD }}"
 
           az storage blob upload-batch \
-            --source ./build \ 
+            --source ./build \
             --destination '$web' \
             --blob-endpoint "${{ secrets.AZURE_STORAGE_ACCOUNT_URL_PROD }}" \
             --sas-token "${{ secrets.AZURE_STORAGE_SAS_TOKEN_PROD }}"
