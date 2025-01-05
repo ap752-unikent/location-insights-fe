@@ -14,9 +14,8 @@ import { useLocation } from "react-router-dom";
 
 export const Main = () => {
 
-    const [budgetMonthly, setBudgetMonthly] = useState(1000);
+    const { state: { budgetMonthly, activeTab, scrollPosition}, updateState } = usePageState();
     const [budgetMonthlyDebounced] = useDebounce(budgetMonthly, 1000);
-    const { state: { activeTab, scrollPosition}, updateState } = usePageState();
     const { state: { questionsAnswers } } = useQuestionsAnswersContext();
     const weeklyPriceThreshold = useMemo(() => budgetMonthlyDebounced / 4, [budgetMonthlyDebounced]);
     const location = useLocation();
@@ -39,6 +38,10 @@ export const Main = () => {
 
     const handleTabChange = (newTab: TabType) => {
         updateState({ activeTab: newTab });
+    }
+
+    const handleSetBudgetMonthly = (value: number) => {
+        updateState({ budgetMonthly: value });
     }
 
     return (
@@ -71,7 +74,7 @@ export const Main = () => {
                         districts={districts}
                         districtsLoading={districtsLoading}
                         budgetMonthly={budgetMonthly}
-                        setBudgetMonthly={setBudgetMonthly}
+                        setBudgetMonthly={handleSetBudgetMonthly}
                         weeklyPriceThreshold={weeklyPriceThreshold}
                     />
                 </Tabs.Content>

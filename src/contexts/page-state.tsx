@@ -5,6 +5,7 @@ export type PageState = {
   activeTab: TabType;
   scrollPosition: number;
   pageNumber: number;
+  budgetMonthly: number;
 }
 
 type PageStateContextValue = {
@@ -23,6 +24,7 @@ export const PageStateProvider: React.FC<PageStateProviderProps> = ({ children }
     activeTab: 'questionnaire',   
     scrollPosition: 0, 
     pageNumber: 1,
+    budgetMonthly: 1000
   });
 
   const updateState = (newState: Partial<PageState>) => {
