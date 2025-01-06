@@ -18,7 +18,7 @@ export const Question = ({
         <Stack
             direction={"column"}
             width={"100%"}
-            gap={1}
+            gap={2}
         >
             <Text
                 fontSize={"sm"}

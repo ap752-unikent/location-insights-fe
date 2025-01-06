@@ -1,5 +1,5 @@
 import { useFetchBestDistrict } from "../hooks/use-fetch-best-location";
-import { Stack, useBreakpointValue, Tabs } from "@chakra-ui/react"
+import { Stack, useBreakpointValue, Tabs, Text} from "@chakra-ui/react"
 import "@fontsource/inter";
 import { useEffect, useMemo, useState } from "react";
 import { questions } from "../constants";
@@ -53,6 +53,18 @@ export const Main = () => {
             marginBottom={24}
             fontFamily={"Inter"}
         >
+            <Text
+                fontSize={"md"}
+                fontWeight={"bold"}
+            >
+                Hello there 👋 &nbsp; Welcome to HouseHop!
+            </Text>
+            <Text
+                fontSize={"sm"}
+                marginBottom={4}
+            >
+                Complete the short questionnaire below, and we’ll provide personalized, data-driven recommendations on the best districts in London to consider for your new home. Use these suggestions as a helpful starting point, and be sure to do your own research to ensure they’re the perfect fit for your lifestyle and needs.
+            </Text>
             <Tabs.Root
                 width={"100%"}
                 variant={"enclosed"}

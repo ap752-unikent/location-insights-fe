@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { LocationAnalysis } from './pages/location-analysis';
 import { PageStateProvider } from './contexts/page-state';
+import { Header } from './components/header/header';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
       <ChakraUIProvider>
         <PageStateProvider>
           <QuestionsAnswerProvider>
+            <Header />
             <Router>
               <Routes>
                 <Route path='/' element={<Main />} />
