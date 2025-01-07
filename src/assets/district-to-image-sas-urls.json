@@ -189,5 +189,6 @@
   "W6": "https://gohousharedev.blob.core.windows.net/district-images/W6.jpeg?sv=2025-01-05&spr=https&st=2024-12-24T23%3A24%3A51Z&se=2025-12-24T23%3A24%3A51Z&sr=b&sp=r&sig=Gj1ACyeUPUmM54cr9qrzi9C708qoO34B89Wi%2FW%2Fen9U%3D",
   "W7": "https://gohousharedev.blob.core.windows.net/district-images/W7.jpeg?sv=2025-01-05&spr=https&st=2024-12-24T23%3A24%3A52Z&se=2025-12-24T23%3A24%3A52Z&sr=b&sp=r&sig=ONw4J85kS9POHKqetlg%2BDaqG7E4tUa2LD7zdtsUMjo4%3D",
   "W8": "https://gohousharedev.blob.core.windows.net/district-images/W8.jpeg?sv=2025-01-05&spr=https&st=2024-12-24T23%3A24%3A52Z&se=2025-12-24T23%3A24%3A52Z&sr=b&sp=r&sig=qbQTR3OTyBxuxMP2eGNL%2BGsH2jw0qIQW5d0DHF0HeRc%3D",
-  "W9": "https://gohousharedev.blob.core.windows.net/district-images/W9.jpeg?sv=2025-01-05&spr=https&st=2024-12-24T23%3A24%3A53Z&se=2025-12-24T23%3A24%3A53Z&sr=b&sp=r&sig=DEuKEUaZV6lf09Akz4pTH4fGnkhTisXavIV8V5NHoKI%3D"
+  "W9": "https://gohousharedev.blob.core.windows.net/district-images/W9.jpeg?sv=2025-01-05&spr=https&st=2024-12-24T23%3A24%3A53Z&se=2025-12-24T23%3A24%3A53Z&sr=b&sp=r&sig=DEuKEUaZV6lf09Akz4pTH4fGnkhTisXavIV8V5NHoKI%3D",
+  "default": "https://gohousharedev.blob.core.windows.net/district-images/default.png?sv=2023-01-03&st=2025-01-07T12%3A43%3A09Z&se=2026-01-08T12%3A43%3A00Z&sr=b&sp=r&sig=DlALFzA5HGYOWevOBq8b6k%2F3Z3VtEQpeNClK8tomkes%3D"
 }

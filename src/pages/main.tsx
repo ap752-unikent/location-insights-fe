@@ -66,7 +66,7 @@ export const Main = () => {
                             fontSize={"sm"}
                             marginBottom={4}
                         >
-                            Complete the short questionnaire below, and we’ll provide personalized, data-driven recommendations on the best districts in London to consider for your new home. Use these suggestions as a helpful starting point, and be sure to do your own research to ensure they’re the perfect fit for your lifestyle and needs.
+                            Complete the short questionnaire below, and we’ll provide personalized, data-driven recommendations on the best districts in London to consider for your new home.
                         </Text>
                     </>
                 )

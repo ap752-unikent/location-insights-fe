@@ -13,7 +13,7 @@ const HEIGHT = 150;
 
 export const Heading = ({ district }: Props) => {
 
-    const imageUrl = districtToImageSasUrls[district];
+    const imageUrl = districtToImageSasUrls[district] ?? districtToImageSasUrls["default"];
     const [primary] = useToken("colors", ["primary"]);
     const rgba0 = hexToRgba(primary, 0);
     const rgba1 = hexToRgba(primary, 1);
