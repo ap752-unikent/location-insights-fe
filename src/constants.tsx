@@ -1,3 +1,8 @@
+import { FaTrain, FaTree } from "react-icons/fa";
+import { FaBasketShopping } from "react-icons/fa6";
+import { HiMiniUserGroup } from "react-icons/hi2";
+import { MdOutlineNightlife } from "react-icons/md";
+
 export type Question = {
     id: string,
     question: string,
@@ -174,3 +179,61 @@ export const questions : Question[] = [
         ]
     }
 ]
+
+export type VoteCategory = {
+    id: string,
+    name: string,
+    icon: JSX.Element,
+    votes?: number
+}
+
+export const VOTE_IDS = {
+    parksAndNature: "parksAndNature",
+    transportLinks: "transportLinks",
+    nightlife: "nightlife",
+    convenienceStores: "convenienceStores",
+    safety: "safety"
+}
+
+export const categories : VoteCategory[] = [
+    {
+        id: VOTE_IDS.parksAndNature,
+        name: "Parks and nature",
+        icon: <FaTree
+            color="gray"
+        />
+    },
+    {
+        id: VOTE_IDS.transportLinks,
+        name: "Transport links",
+        icon: <FaTrain
+            color="gray"
+        />
+    },
+    {
+        id: VOTE_IDS.nightlife,
+        name: "Nightlife",
+        icon: <MdOutlineNightlife
+            color="gray"
+            size={20}
+        />
+    },
+    {
+        id: VOTE_IDS.convenienceStores,
+        name: "Convenience",
+        icon: <FaBasketShopping
+            color="gray"
+            size={18}
+        />
+    },
+    {
+        id: VOTE_IDS.safety,
+        name: "Safety",
+        icon: <HiMiniUserGroup
+            color="gray"
+            size={20}
+        />
+    }
+]
+
+export const TOTAL_VOTES = 6;

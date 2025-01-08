@@ -11,6 +11,7 @@ import {
 import { LocationAnalysis } from './pages/location-analysis';
 import { PageStateProvider } from './contexts/page-state';
 import { Header } from './components/header/header';
+import { VotesStateProvider } from './contexts/votes';
 
 const queryClient = new QueryClient();
 
@@ -19,7 +20,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ChakraUIProvider>
         <PageStateProvider>
-          <QuestionsAnswerProvider>
+          <VotesStateProvider>
             <Header />
             <Router>
               <Routes>
@@ -27,7 +28,7 @@ function App() {
                 <Route path='/location-analysis/:district' element={<LocationAnalysis />} />
               </Routes>
             </Router>
-          </QuestionsAnswerProvider>
+          </VotesStateProvider>
         </PageStateProvider>
       </ChakraUIProvider>
     </QueryClientProvider>
