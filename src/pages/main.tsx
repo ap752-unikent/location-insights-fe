@@ -81,7 +81,7 @@ export const Main = () => {
             >
                 <Tabs.List>
                     <Tabs.Trigger value="questionnaire">
-                        Questionnaire
+                        Vote
                     </Tabs.Trigger>
                     <Tabs.Trigger value="results" disabled={!allVotesUsedMem}>
                         Results
