@@ -1,12 +1,11 @@
 import { Text } from "@chakra-ui/react";
 import { RangeChart } from "../../location-result/range-chart";
-import { PostcodeInsight } from "../../../types";
+import { DistrictInsight } from "../../../types";
 import { SummarySkeleton } from "../summary-skeleton"
 import { HiMiniUserGroup } from "react-icons/hi2";
-import { useMemo } from "react";
 
 type Props = {
-    districtData: PostcodeInsight;
+    districtData: DistrictInsight;
     avCrimeRate: number;
 }
 
@@ -15,14 +14,7 @@ export const Crime = ({
     avCrimeRate
 } : Props) => {
 
-    const averageCrimeRateForThisDistrict = useMemo(() => {
-        return ((districtData?.center.numberOfCrimes ?? 0)
-            + (districtData?.east.numberOfCrimes ?? 0)
-            + (districtData?.west.numberOfCrimes ?? 0)
-            + (districtData?.north.numberOfCrimes ?? 0)
-            + (districtData?.south.numberOfCrimes ?? 0)
-        ) / 5;
-    }, [districtData])
+    const crimes = districtData.weighted.numberOfCrimes;
 
     return (
         <SummarySkeleton
@@ -40,7 +32,7 @@ export const Crime = ({
             <RangeChart 
                 topYLabel="Av. crime rate across London"
                 bottomYLabel="This district"
-                bottomValue={Number(averageCrimeRateForThisDistrict.toFixed(0))}
+                bottomValue={Number(crimes.toFixed(0))}
                 max={Number(avCrimeRate.toFixed(0))}
                 unit=""
                 top={40}

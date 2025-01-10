@@ -2,35 +2,19 @@ import { Stack, Text } from "@chakra-ui/react";
 import { FaTree } from "react-icons/fa";
 import { Coverage } from '../../coverage/coverage';
 import { SummarySkeleton } from "../summary-skeleton";
-import { useMemo } from "react";
-import { PostcodeInsight } from "../../../types";
+import { DistrictInsight } from "../../../types";
 import { MdNaturePeople } from "react-icons/md";
 
 type Props = {
-    districtData: PostcodeInsight;
+    districtData: DistrictInsight;
 }
 
 export const ParksAndNature = ({
     districtData
 }: Props) => {
 
-    const averageGreenProportion = useMemo(() => {
-        return ((districtData?.center.imageAnalysis.greenProportion ?? 0)
-            + (districtData?.east.imageAnalysis.greenProportion ?? 0)
-            + (districtData?.west.imageAnalysis.greenProportion ?? 0)
-            + (districtData?.north.imageAnalysis.greenProportion ?? 0)
-            + (districtData?.south.imageAnalysis.greenProportion ?? 0)
-        ) / 5;
-    }, [districtData])
-
-    const averageBlueProportion = useMemo(() => {
-        return ((districtData?.center.imageAnalysis.blueProportion ?? 0)
-            + (districtData?.east.imageAnalysis.blueProportion ?? 0)
-            + (districtData?.west.imageAnalysis.blueProportion ?? 0)
-            + (districtData?.north.imageAnalysis.blueProportion ?? 0)
-            + (districtData?.south.imageAnalysis.blueProportion ?? 0)
-        ) / 5;
-    }, [districtData])
+    const averageGreenProportion = districtData.weighted.imageAnalysis.greenProportion;
+    const averageBlueProportion = districtData.weighted.imageAnalysis.blueProportion;
 
     const parks = districtData.parks ?? [];
 

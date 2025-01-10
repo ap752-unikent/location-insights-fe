@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { PostcodeInsight } from "../../../types";
+import { DistrictInsight } from "../../../types";
 import { SummarySkeleton } from "../summary-skeleton";
 import { MdOutlineNightlife } from "react-icons/md";
 import { BiSolidDrink } from "react-icons/bi";
@@ -8,24 +8,16 @@ import { PiDiscoBallBold } from "react-icons/pi";
 import { PlacesText } from "../../../components/places-text/places-text";
 
 type Props = {
-    districtData: PostcodeInsight;
+    districtData: DistrictInsight;
 }
 
 export const Nightlife = ({
     districtData
 }: Props) => {
 
-    const barsAndRestuarants = [
-        ...districtData.center.nearestBarsRestaurants,
-        ...districtData.east.nearestBarsRestaurants,
-        ...districtData.west.nearestBarsRestaurants,
-        ...districtData.north.nearestBarsRestaurants,
-        ...districtData.south.nearestBarsRestaurants
-    ];
-
-    const restaurants = barsAndRestuarants.filter((place) => place.primaryType?.includes("restaurant"));
-    const nightClubs = barsAndRestuarants.filter((place) => place.primaryType === "night_club");
-    const bars = barsAndRestuarants.filter((place) => !place.primaryType?.includes("restaurant") && place.primaryType !== "night_club");
+    const restaurants = districtData.weighted.noOfRestaurants;
+    const nightClubs = districtData.weighted.noOfNightClubs;
+    const bars = districtData.weighted.noOfBars;
 
     return (
         <SummarySkeleton
@@ -46,7 +38,7 @@ export const Nightlife = ({
                         marginRight: "12px"
                     }}
                 />}
-                count={Math.ceil(bars.length / 5)}
+                count={Math.ceil(bars)}
             />
             <PlacesText
                 text={"restaurants rated 4 stars and above"}
@@ -56,7 +48,7 @@ export const Nightlife = ({
                     }}
                     size={16}
                 />}
-                count={Math.ceil(restaurants.length / 5)}
+                count={Math.ceil(restaurants)}
             />
             <PlacesText
                 text={"nightclubs rated 4 stars and above"}
@@ -66,7 +58,7 @@ export const Nightlife = ({
                     }}
                     size={20}
                 />}
-                count={Math.ceil(nightClubs.length / 5)}
+                count={Math.ceil(nightClubs)}
             />
         </SummarySkeleton>
     )

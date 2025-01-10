@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import icon from '../../assets/record.png';
 import { Stack, Text } from "@chakra-ui/react";
-import { PostcodeInsight } from "../../types";
+import { DistrictInsight } from "../../types";
 
 let DefaultIcon = L.icon({
     iconUrl: icon,
@@ -14,7 +14,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 type Props = {
     center: LatLng,
-    district: PostcodeInsight
+    district: DistrictInsight
 }
 
 export const AnalysisMap = ({
@@ -78,7 +78,7 @@ export const AnalysisMap = ({
                             <Popup>
                                 <Text>
                                     {marker.label} <br />
-                                    £{(marker.averageWeeklyPricePerRoom * 4)} pcm
+                                    £{(marker.weeklyPricePerRoom * 4)} pcm
                                 </Text>
                             </Popup>
                         </Marker>

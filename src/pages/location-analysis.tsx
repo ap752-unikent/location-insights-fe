@@ -1,4 +1,4 @@
-import { Stack, useBreakpointValue, Text, Button } from "@chakra-ui/react"
+import { Stack, useBreakpointValue, Text } from "@chakra-ui/react"
 import { LatLng } from "leaflet"
 import { AnalysisMap } from "../components/analysis-map/analysis-map";
 import { LocationResultSkeleton } from "../components/location-result-skeleton/location-result-skeleton";
@@ -28,11 +28,11 @@ export const LocationAnalysis = () => {
     }, [location]);
 
     const prices = [
-        districtData?.center.averageWeeklyPricePerRoom ?? 0,
-        districtData?.east.averageWeeklyPricePerRoom ?? 0,
-        districtData?.west.averageWeeklyPricePerRoom ?? 0,
-        districtData?.north.averageWeeklyPricePerRoom ?? 0,
-        districtData?.south.averageWeeklyPricePerRoom ?? 0
+        districtData?.center.weeklyPricePerRoom ?? 0,
+        districtData?.east.weeklyPricePerRoom ?? 0,
+        districtData?.west.weeklyPricePerRoom ?? 0,
+        districtData?.north.weeklyPricePerRoom ?? 0,
+        districtData?.south.weeklyPricePerRoom ?? 0
     ]
 
     const maxPrice = Math.max(...prices);
@@ -81,27 +81,9 @@ export const LocationAnalysis = () => {
                     >
                         <TransportLinks
                             district={district ?? ""}
-                            stations={[
-                                ...districtData?.center.nearestStationsWithWalkingMinutes ?? [],
-                                ...districtData?.east.nearestStationsWithWalkingMinutes ?? [],
-                                ...districtData?.west.nearestStationsWithWalkingMinutes ?? [],
-                                ...districtData?.north.nearestStationsWithWalkingMinutes ?? [],
-                                ...districtData?.south.nearestStationsWithWalkingMinutes ?? [],
-                            ]}
-                            commuteTimeToCentralLondon={[
-                                districtData?.center.commuteTimeToCentralLondon ?? { railMinutes: NaN },
-                                districtData?.east.commuteTimeToCentralLondon ?? { railMinutes: NaN },
-                                districtData?.west.commuteTimeToCentralLondon ?? { railMinutes: NaN },
-                                districtData?.north.commuteTimeToCentralLondon ?? { railMinutes: NaN },
-                                districtData?.south.commuteTimeToCentralLondon ?? { railMinutes: NaN },
-                            ]}
-                            transitTimeFromCentralLondonNight={[
-                                districtData?.center.transitTimeFromCentralLondonNight ?? { railMinutes: NaN },
-                                districtData?.east.transitTimeFromCentralLondonNight ?? { railMinutes: NaN },
-                                districtData?.west.transitTimeFromCentralLondonNight ?? { railMinutes: NaN },
-                                districtData?.north.transitTimeFromCentralLondonNight ?? { railMinutes: NaN },
-                                districtData?.south.transitTimeFromCentralLondonNight ?? { railMinutes: NaN },
-                            ]}
+                            stations={districtData?.stations ?? []}
+                            commuteTimeToCentralLondon={districtData?.weighted.commuteTimeToCentralLondon.railMinutes ?? NaN}
+                            transitTimeFromCentralLondonNight={districtData?.weighted.transitTimeFromCentralLondonNight.railMinutes ?? NaN}
                         />
                         {
                             districtData && (

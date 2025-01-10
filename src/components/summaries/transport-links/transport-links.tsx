@@ -12,8 +12,8 @@ import { IoIosPartlySunny } from "react-icons/io";
 type Props = {
     district: string;
     stations: LocationData["nearestStationsWithWalkingMinutes"];
-    commuteTimeToCentralLondon: LocationData["commuteTimeToCentralLondon"][];
-    transitTimeFromCentralLondonNight: LocationData["transitTimeFromCentralLondonNight"][];
+    commuteTimeToCentralLondon: number
+    transitTimeFromCentralLondonNight: number;
 }
 
 const MAX_STATION_WALKING_MINUTES = 20;
@@ -27,19 +27,11 @@ export const TransportLinks = ({
 }: Props) => {
 
     const filteredStations = stations.filter((station) => station.nearestStationWalkingMinutes.walkingMinutes < MAX_STATION_WALKING_MINUTES);
-    // @ts-expect-error
-    const uniqueStations = [...filteredStations.reduce((map, obj) => map.set(obj.nearestStation.displayName, obj), new Map()).values()];
-    const uniqueStationTotalCount = uniqueStations.length;
-    const uniqueStationsTruncated = uniqueStations.slice(0, MAX_STATION_COUNT);
-    const averageCommuteTimeToCentralLondon = useMemo(() => {
-        const total = commuteTimeToCentralLondon.reduce((acc, val) => acc + val.railMinutes, 0);
-        return total / commuteTimeToCentralLondon.length;
-    }, [commuteTimeToCentralLondon]);
 
-    const averageTransitTimeFromCentralLondonNight = useMemo(() => {
-        const total = transitTimeFromCentralLondonNight.reduce((acc, val) => acc + val.railMinutes, 0);
-        return total / transitTimeFromCentralLondonNight.length
-    }, [transitTimeFromCentralLondonNight]);
+    const uniqueStationTotalCount = filteredStations.length;
+    const uniqueStationsTruncated = filteredStations.slice(0, MAX_STATION_COUNT);
+    const averageCommuteTimeToCentralLondon = commuteTimeToCentralLondon;
+    const averageTransitTimeFromCentralLondonNight = transitTimeFromCentralLondonNight;
 
     return (
         <SummarySkeleton

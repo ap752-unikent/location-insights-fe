@@ -18,6 +18,10 @@ export type PostcodeLocation = {
     longitude: number;
 }
 
+type PostcodeLocationWithPrice = PostcodeLocation & {
+    weeklyPricePerRoom: number;
+}
+
 export type PostcodeInsight = {
     district: string;
     north: LocationData;
@@ -59,17 +63,7 @@ export type LocationData = {
         greenProportion: number;
         blueProportion: number;
     };
-    nearestStationsWithWalkingMinutes: {
-        nearestStation: {
-            lat: number;
-            lng: number;
-            displayName: string;
-            placeId: string;
-        };
-        nearestStationWalkingMinutes: {
-            walkingMinutes: number;
-        };
-    }[];
+    nearestStationsWithWalkingMinutes: Station[];
     nearestBarsRestaurants: Place[];
     nearestConvStores: Place[];
     gyms: Place[];
@@ -87,6 +81,50 @@ export type LocationData = {
     longitude: number;
 };
 
+type Station = {
+    nearestStation: {
+        lat: number;
+        lng: number;
+        displayName: string;
+        placeId: string;
+    };
+    nearestStationWalkingMinutes: {
+        walkingMinutes: number;
+    };
+};
+
+export type DistrictInsight = {
+    district: string;
+    weighted: WeightedData;
+    stations: Station[];
+    center: PostcodeLocationWithPrice;
+    east: PostcodeLocationWithPrice;
+    north: PostcodeLocationWithPrice;
+    south: PostcodeLocationWithPrice;
+    west: PostcodeLocationWithPrice;
+    parks: Park[];
+};
+
+type WeightedData = {
+    imageAnalysis: {
+        greenProportion: number;
+        blueProportion: number;
+    };
+    commuteTimeToCentralLondon: {
+        railMinutes: number;
+    };
+    transitTimeFromCentralLondonNight: {
+        railMinutes: number;
+    };
+    noOfRestaurants: number;
+    noOfNightClubs: number;
+    noOfBars: number;
+    numberOfCrimes: number;
+    convStores: number;
+    doctors: number;
+    gyms: number;
+};
+
 export type DistrictData = {
     district: string;
     center: PostcodeLocation,
@@ -94,9 +132,7 @@ export type DistrictData = {
     east: PostcodeLocation,
     south: PostcodeLocation,
     west: PostcodeLocation,
-    parks: {
-
-    }
+    parks: {}
 }
 
 export type TabType = "questionnaire" | "results";

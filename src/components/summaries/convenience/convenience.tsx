@@ -1,46 +1,22 @@
 import { Text } from "@chakra-ui/react";
 import { PlacesText } from "../../../components/places-text/places-text";
-import { PostcodeInsight } from "../../../types";
+import { DistrictInsight } from "../../../types";
 import { SummarySkeleton } from "../summary-skeleton"
 import { FaBasketShopping } from "react-icons/fa6";
 import { CgGym } from "react-icons/cg";
 import { FaUserDoctor } from "react-icons/fa6";
 
 type Props = {
-    districtData: PostcodeInsight;
+    districtData: DistrictInsight;
 }
 
 export const Convenience = ({
     districtData
 }: Props) => {
 
-    const convenienceStores = [
-        ...districtData.center.nearestConvStores,
-        ...districtData.east.nearestConvStores,
-        ...districtData.west.nearestConvStores,
-        ...districtData.north.nearestConvStores,
-        ...districtData.south.nearestConvStores
-    ]
-
-    const gyms = [
-        ...districtData.center.gyms,
-        ...districtData.east.gyms,
-        ...districtData.west.gyms,
-        ...districtData.north.gyms,
-        ...districtData.south.gyms
-    ]
-
-    const doctors = [
-        ...districtData.center.doctors,
-        ...districtData.east.doctors,
-        ...districtData.west.doctors,
-        ...districtData.north.doctors,
-        ...districtData.south.doctors
-    ]
-
-    const convenienceStoresAv = Math.ceil(convenienceStores.length / 5);
-    const gymsAv = Math.ceil(gyms.length / 5);
-    const doctorsAv = Math.ceil(doctors.length / 5);
+    const convenienceStoresAv = Math.ceil(districtData.weighted.convStores)
+    const gymsAv = Math.ceil(districtData.weighted.gyms);
+    const doctorsAv = Math.ceil(districtData.weighted.doctors);
 
     return (
         <SummarySkeleton
