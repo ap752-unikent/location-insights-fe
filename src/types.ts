@@ -56,6 +56,8 @@ type Place = {
 
 export type Aggregates = {
     avCrimesPerDisrict: number;
+    avCrimesPerPopulationPerDistrict: number;
+    avCrimePerCapitaPerDistrict: number;
 }
 
 export type LocationData = {
@@ -120,6 +122,8 @@ type WeightedData = {
     noOfNightClubs: number;
     noOfBars: number;
     numberOfCrimes: number;
+    crimesPerPopulation: number;
+    crimesPerCapita: number;
     convStores: number;
     doctors: number;
     gyms: number;

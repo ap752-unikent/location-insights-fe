@@ -72,6 +72,7 @@ export const LocationResult = ({
                         bottomYLabel="Your budget"
                         topYLabel="Rent"
                         unit="£"
+                        width={"100%"}
                     />
                     {
                         !isSmallScreen && (

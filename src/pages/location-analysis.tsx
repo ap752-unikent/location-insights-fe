@@ -133,7 +133,7 @@ export const LocationAnalysis = () => {
                         districtData && (
                             <Crime 
                                 districtData={districtData}
-                                avCrimeRate={aggregates?.avCrimesPerDisrict ?? 0}
+                                avCrimeRate={aggregates}
                             />
                         )
                     }
