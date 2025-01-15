@@ -1,12 +1,14 @@
 import { useCallback, useMemo } from "react";
 import { TOTAL_VOTES, VoteCategory } from "../../constants";
 import { useVotesContext } from "../../contexts/votes";
-import { Button, Stack, Text } from "@chakra-ui/react";
-import { FaVoteYea, FaMinus } from "react-icons/fa";
+import { Button, Stack } from "@chakra-ui/react";
+import { FaVoteYea, FaArrowRight } from "react-icons/fa";
 import { Category } from "./category";
+import { usePageState } from "../../contexts/page-state";
 
 export const VoteCategories = () => {
 
+    const { updateState } = usePageState();
     const { state, updateCategory, clearVotes } = useVotesContext();
 
     const votesUsed = useMemo(() => {
@@ -15,13 +17,9 @@ export const VoteCategories = () => {
 
     const handleRemove = useCallback((category: VoteCategory) => {
 
-        console.log(category);
-
         if (category.votes === undefined || category.votes === 0) {
             return;
         }
-
-        console.log("Removing vote");
 
         updateCategory({ ...category, votes: category.votes - 1 }, "decrement");
     }, [updateCategory]);
@@ -71,6 +69,21 @@ export const VoteCategories = () => {
                     }
                 </Stack>
             }
+            <Button
+                marginTop={8}
+                variant={"solid"}
+                disabled={votesUsed < TOTAL_VOTES}
+                backgroundColor="secondary"
+                onClick={() => updateState({ activeTab: "results" })}
+            >
+                See results
+                <FaArrowRight
+                    color="white"
+                    style={{
+                        height: 16,
+                    }}
+                />
+            </Button>
         </>
     )
 }

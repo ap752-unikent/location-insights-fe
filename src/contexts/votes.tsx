@@ -1,7 +1,9 @@
 import { TOTAL_VOTES, VoteCategory } from '../constants';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { categories } from '../constants';
 import { allVotesUsed } from '../utils/all-votes-used';
+import { usePageState } from './page-state';
+import { useEditable } from '@chakra-ui/react';
 
 export type VotesState = {
   votes: VoteCategory[];
@@ -24,9 +26,15 @@ type VotesStateProviderProps = {
 const initialVotes = categories;
 
 export const VotesStateProvider: React.FC<VotesStateProviderProps> = ({ children }) => {
+
+  const { updateState } = usePageState();
   const [state, setState] = useState<VotesState>({
     votes: initialVotes
   });
+
+  useEffect(() => {
+    updateState({ pageNumber: 1 });
+  }, [state.votes]);
 
   const updateCategory = (category: VoteCategory, direction: Direction) => {
 

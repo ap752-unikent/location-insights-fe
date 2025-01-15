@@ -63,50 +63,56 @@ export const TransportLinks = ({
                         )
                     }
                 </Stack>
-                <Stack>
+                <Stack
+                    direction={"column"}
+                    gap={4}
+                >
                     {
-                        <Text
-                            fontSize={"sm"}
+                        <Stack
+                            direction={"row"}
+                            gap={4}
+                            alignItems={"center"}
                             color={"gray.500"}
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                flexDirection: "row",
-                            }}
                         >
                             <IoIosPartlySunny
-                                color={"gray.500"}
-                                size={40}
+                                size={24}
                                 style={{
-                                    marginRight: "12px"
+                                    flexGrow: 1
                                 }}
                             />
-                            Planning to commute often? The average travel time from {district} to Central London, via public transport, is {averageCommuteTimeToCentralLondon.toFixed(0)} minutes during peak hours.
-                        </Text>
+                            <Text
+                                fontSize={"sm"}
+                                color={"gray.500"}
+                                width={"100%"}
+                            >                            <b>Planning to commute often?</b> The average travel time from <b>{district} to Central London</b>, via public transport, is <b>{averageCommuteTimeToCentralLondon.toFixed(0)} minutes</b> during peak hours.
+                            </Text>
+                        </Stack>
                     }
                     {
-                        <Text
-                            fontSize={"sm"}
+                        <Stack
+                            direction={"row"}
+                            gap={4}
+                            alignItems={"center"}
                             color={"gray.500"}
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                flexDirection: "row",
-                            }}
                         >
                             <IoIosCloudyNight
-                                color={"gray.500"}
-                                size={32}
+                                size={24}
                                 style={{
-                                    marginRight: "12px"
+                                    flexGrow: 1
                                 }}
                             />
-                            Enjoy going out out? Average travel time from Central London, via public transport, at night is {averageTransitTimeFromCentralLondonNight.toFixed(0)} minutes.
-                        </Text>
+                            <Text
+                                fontSize={"sm"}
+                                color={"gray.500"}
+                                width={"100%"}
+                            >
+                                <b>Enjoy going out out?</b> Average travel time from Central London, via public transport, at night is <b>{averageTransitTimeFromCentralLondonNight.toFixed(0)} minutes</b>.
+                            </Text>
+                        </Stack>
                     }
                 </Stack>
             </Stack>
-        </SummarySkeleton>
+        </SummarySkeleton >
     )
 }
 
