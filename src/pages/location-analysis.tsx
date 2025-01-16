@@ -41,8 +41,8 @@ export const LocationAnalysis = () => {
     return (
         <Stack
             direction={"column"}
-            width={isSmallScreen ? "80%" : "50%"}
-            transform={isSmallScreen ? "translateX(10%)" : "translateX(50%)"}
+            width={isSmallScreen ? "100%" : "50%"}
+            transform={isSmallScreen ? "translateX(0%)" : "translateX(50%)"}
             marginTop={8}
             marginBottom={24}
             fontFamily={"Inter"}
@@ -54,6 +54,7 @@ export const LocationAnalysis = () => {
                 onClick={() => navigate(-1)}
                 cursor={"pointer"}
                 alignSelf={"flex-start"}
+                marginLeft={isSmallScreen ? 2 : 0}
                 style={{
                     display: "flex",
                     alignItems: "center",
@@ -61,13 +62,14 @@ export const LocationAnalysis = () => {
             >
               <MdArrowBack
                 style={{
-                    marginRight: "4px"
+                    marginRight: 4
                 }}
                 size={16}
               />   Return to results
             </Text>
             <LocationResultSkeleton
                 district={district ?? ""}
+                type="page"
             >
                 <Stack
                     padding={4}

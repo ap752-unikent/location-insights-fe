@@ -1,5 +1,5 @@
 import hexToRgba from "hex-to-rgba";
-import { Text, Image, Box, Stack, useToken } from "@chakra-ui/react"
+import { Text, Image, Box, Stack, useToken, useBreakpointValue } from "@chakra-ui/react"
 import districtToImageSasUrlsRaw from "../../assets/district-to-image-sas-urls.json";
 
 type DistrictToImageSasUrls = { [district: string]: string };
@@ -7,12 +7,14 @@ const districtToImageSasUrls = districtToImageSasUrlsRaw as DistrictToImageSasUr
 
 type Props = {
     district: string;
+    type: "card" | "page";
 }
 
 const HEIGHT = 150;
 
-export const Heading = ({ district }: Props) => {
+export const Heading = ({ district, type}: Props) => {
 
+    const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const imageUrl = districtToImageSasUrls[district] ?? districtToImageSasUrls["default"];
     const [primary] = useToken("colors", ["primary"]);
     const rgba0 = hexToRgba(primary, 0);
@@ -31,7 +33,7 @@ export const Heading = ({ district }: Props) => {
             />
             <Image
                 height={HEIGHT}
-                borderRadius={"8px 8px 0 0"}
+                borderRadius={isSmallScreen && type === "page" ? 0 : "8px 8px 0 0"}
                 alt="response"
                 src={imageUrl}
                 objectFit={"cover"}

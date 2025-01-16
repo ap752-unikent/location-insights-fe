@@ -47,8 +47,8 @@ export const Main = () => {
     return (
         <Stack
             direction={"column"}
-            width={isSmallScreen ? "80%" : "50%"}
-            transform={isSmallScreen ? "translateX(10%)" : "translateX(50%)"}
+            width={isSmallScreen ? "90%" : "50%"}
+            transform={isSmallScreen ? "translateX(5%)" : "translateX(50%)"}
             marginTop={8}
             marginBottom={24}
             fontFamily={"Inter"}

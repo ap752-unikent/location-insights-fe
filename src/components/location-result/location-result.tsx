@@ -43,7 +43,10 @@ export const LocationResult = ({
     }
 
     return (
-        <LocationResultSkeleton district={district}>
+        <LocationResultSkeleton 
+            district={district}
+            type="card"
+        >
             <Stack
                 padding={padding}
                 paddingBottom={0}
@@ -72,7 +75,7 @@ export const LocationResult = ({
                         bottomYLabel="Your budget"
                         topYLabel="Rent"
                         unit="£"
-                        width={"100%"}
+                        width={"105%"}
                     />
                     {
                         !isSmallScreen && (

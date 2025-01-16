@@ -4,10 +4,11 @@ import { Heading } from "../location-result/heading";
 
 type Props = {
     district: string;
+    type: "card" | "page";
 };
 
 export const LocationResultSkeleton = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
-    ({ district, children }, ref) => {
+    ({ district, children, type}, ref) => {
 
         return (
             <Stack
@@ -17,7 +18,10 @@ export const LocationResultSkeleton = forwardRef<HTMLDivElement, PropsWithChildr
                 ref={ref}
                 gap={0}
             >
-                <Heading district={district} />
+                <Heading 
+                    district={district} 
+                    type={type}
+                />
                 {children}
             </Stack>
         );
