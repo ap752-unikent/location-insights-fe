@@ -10,6 +10,7 @@ import { MdArrowForward } from "react-icons/md"
 import { LocationResultSkeleton } from "../location-result-skeleton/location-result-skeleton"
 import { useNavigate } from "react-router-dom"
 import { usePageState } from "../../contexts/page-state"
+import { categories, VOTE_IDS} from "../../constants"
 
 type Props = DistrictData & {
     yourBudget: number;
@@ -38,12 +39,12 @@ export const LocationResult = ({
     const compatibilityTextSize = useBreakpointValue({ base: "10px", md: "xs" });
 
     const handleViewDetails = () => {
-        updateState({scrollPosition: window.scrollY});
+        updateState({ scrollPosition: window.scrollY });
         navigate(`/location-analysis/${district}`);
     }
 
     return (
-        <LocationResultSkeleton 
+        <LocationResultSkeleton
             district={district}
             type="card"
         >
@@ -77,23 +78,17 @@ export const LocationResult = ({
                         unit="£"
                         width={"105%"}
                     />
-                    {
-                        !isSmallScreen && (
-                            <>
-                                <div style={{ width: 16 }} />
-                                <IndividualScores
-                                    scores={[
-                                        { score: parksAndNatureScore, label: "Parks & Nature" },
-                                        { score: transportLinksScore, label: "Transport Links" },
-                                        { score: convenienceScore, label: "Convenience" },
-                                        { score: crimeScore, label: "Safety" },
-                                        { score: nightlifeScore, label: "Nightlife" }
-                                    ]}
-                                    width={"75%"}
-                                />
-                            </>
-                        )
-                    }
+                    <div style={{ width: 16 }} />
+                    <IndividualScores
+                        scores={[
+                            { score: parksAndNatureScore, label: "Parks & Nature", icon: categories.find(c => c.id === VOTE_IDS.parksAndNature)?.icon },
+                            { score: transportLinksScore, label: "Transport Links", icon: categories.find(c => c.id === VOTE_IDS.transportLinks)?.icon },
+                            { score: nightlifeScore, label: "Nightlife", icon: categories.find(c => c.id === VOTE_IDS.nightlife)?.icon },
+                            { score: convenienceScore, label: "Convenience", icon: categories.find(c => c.id === VOTE_IDS.convenienceStores)?.icon },
+                            { score: crimeScore, label: "Safety", icon: categories.find(c => c.id === VOTE_IDS.safety)?.icon }
+                        ]}
+                    />
+
                 </Stack>
             </Stack>
             <Button
@@ -104,10 +99,10 @@ export const LocationResult = ({
                 fontWeight={"bold"}
                 fontSize={"xs"}
                 marginBottom={2}
-                marginRight={2}
+                marginRight={isSmallScreen ? 0 : 2}
                 onClick={handleViewDetails}
             >
-                View more details <MdArrowForward />
+                Explore {district} <MdArrowForward />
             </Button>
         </LocationResultSkeleton>
     )

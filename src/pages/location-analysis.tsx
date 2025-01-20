@@ -1,23 +1,23 @@
 import { Stack, useBreakpointValue, Text } from "@chakra-ui/react"
-import { LatLng } from "leaflet"
-import { AnalysisMap } from "../components/analysis-map/analysis-map";
 import { LocationResultSkeleton } from "../components/location-result-skeleton/location-result-skeleton";
 import { useFetchDistrictInsights } from "../hooks/use-fetch-district-insights";
 import { ParksAndNature } from "../components/summaries/parks-and-nature/parks-and-nature";
-import { TransportLinks } from "../components/summaries/transport-links/transport-links";
 import { useLocation, useNavigate, useParams} from "react-router"
 import { Nightlife } from "../components/summaries/nightlife/nightlife";
-import { RangeChart } from "../components/location-result/range-chart";
 import { Crime } from "../components/summaries/crime/crime";
 import { useFetchAggregates } from "../hooks/use-fetch-aggregates";
 import { Convenience } from "../components/summaries/convenience/convenience";
 import { MdArrowBack } from "react-icons/md"
 import { useEffect } from "react";
+import { LocationAnalysisMainAnalysis } from "../components/location-analysis-main-analysis/location-analysis-main-analysis";
 
 export const LocationAnalysis = () => {
 
     const { district } = useParams<{ district: string }>();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const totalWidth = useBreakpointValue({ base: "100%", lg: "50%" });
+    const transform = useBreakpointValue({ base: "translateX(0%)", lg: "translateX(50%)" });
+
     const { districtData } = useFetchDistrictInsights({ district });
     const { aggregates } = useFetchAggregates();
     const navigate = useNavigate();
@@ -41,8 +41,8 @@ export const LocationAnalysis = () => {
     return (
         <Stack
             direction={"column"}
-            width={isSmallScreen ? "100%" : "50%"}
-            transform={isSmallScreen ? "translateX(0%)" : "translateX(50%)"}
+            width={totalWidth}
+            transform={transform}
             marginTop={8}
             marginBottom={24}
             fontFamily={"Inter"}
@@ -75,48 +75,12 @@ export const LocationAnalysis = () => {
                     padding={4}
                     gap={8} 
                 >
-                    <Stack
-                        direction={isSmallScreen ? "column" : "row"}
-                        justifyContent={"space-between"}
-                        width={"100%"}
-                        gap={isSmallScreen ? 8 : 4}
-                    >
-                        <TransportLinks
-                            district={district ?? ""}
-                            stations={districtData?.stations ?? []}
-                            commuteTimeToCentralLondon={districtData?.weighted.commuteTimeToCentralLondon.railMinutes ?? NaN}
-                            transitTimeFromCentralLondonNight={districtData?.weighted.transitTimeFromCentralLondonNight.railMinutes ?? NaN}
-                        />
-                        {
-                            districtData && (
-                                <Stack>
-                                    <AnalysisMap
-                                        center={new LatLng(districtData?.center.latitude ?? 0, districtData?.center.longitude ?? 0)}
-                                        district={districtData}
-                                    />
-                                    <Stack
-                                        gap={0}
-                                    >
-                                        <RangeChart
-                                            max={maxPrice * 4}
-                                            min={minPrice * 4}
-                                            topYLabel="Rent"
-                                            unit="£"
-                                            height={100}
-                                            width={isSmallScreen ? "100%" : "110%"}
-                                        />
-                                        <Text
-                                            fontSize={"xs"}
-                                            color={"gray.500"}
-                                            fontWeight={"bold"}
-                                        >
-                                            The range of average monthly rent for one room in this area.
-                                        </Text>
-                                    </Stack>
-                                </Stack>
-                            )
-                        }
-                    </Stack>
+                    <LocationAnalysisMainAnalysis 
+                        district={district}
+                        districtData={districtData}
+                        minPrice={minPrice}
+                        maxPrice={maxPrice}
+                    />
                     {
                         districtData && (
                             <ParksAndNature

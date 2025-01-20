@@ -1,14 +1,16 @@
-import { Stack, Text, useToken } from '@chakra-ui/react';
+import { Stack, Text, useBreakpointValue, useToken } from '@chakra-ui/react';
 import { ProgressBar } from '../progress/progress-bar';
+import React from 'react';
 
 type ScoreProps = {
     score: number;
     label: string;
+    icon: React.ReactNode;
 }
 
-type Props = { scores: ScoreProps[]; width: number | string }
+type Props = { scores: ScoreProps[] }
 
-export const IndividualScores = ({ scores, width}: Props) => {
+export const IndividualScores = ({ scores }: Props) => {
 
     return (
         <Stack
@@ -23,8 +25,9 @@ export const IndividualScores = ({ scores, width}: Props) => {
         </Stack>
     )
 }
-const IndividualScore = ({ score, label }: ScoreProps) => {
+const IndividualScore = ({ score, label, icon}: ScoreProps) => {
 
+    const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const [secondary] = useToken("colors", ["secondary"]);
 
     return (
@@ -33,17 +36,25 @@ const IndividualScore = ({ score, label }: ScoreProps) => {
             gap={2}
             alignItems={"center"}
         >
-            <Text
-                fontSize={"xs"}
-                fontWeight={"bold"}
-                color={"gray.500"}
-                width={200}
-            >
-                {label}
-            </Text>
-            <ProgressBar 
-                value={score} 
-                color={secondary} 
+            {
+                isSmallScreen ? (
+                    <>
+                        {icon}
+                    </>
+                ) : (
+                    <Text
+                        fontSize={"xs"}
+                        fontWeight={"bold"}
+                        color={"gray.500"}
+                        width={200}
+                    >
+                        {label}
+                    </Text>
+                )
+            }
+            <ProgressBar
+                value={score}
+                color={secondary}
                 height={6}
             />
         </Stack>

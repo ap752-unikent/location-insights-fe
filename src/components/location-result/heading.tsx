@@ -14,7 +14,7 @@ const HEIGHT = 150;
 
 export const Heading = ({ district, type}: Props) => {
 
-    const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const borderRadius = useBreakpointValue({ base: 0, lg: "8px 8px 0 0" });
     const imageUrl = districtToImageSasUrls[district] ?? districtToImageSasUrls["default"];
     const [primary] = useToken("colors", ["primary"]);
     const rgba0 = hexToRgba(primary, 0);
@@ -33,7 +33,7 @@ export const Heading = ({ district, type}: Props) => {
             />
             <Image
                 height={HEIGHT}
-                borderRadius={isSmallScreen && type === "page" ? 0 : "8px 8px 0 0"}
+                borderRadius={borderRadius}
                 alt="response"
                 src={imageUrl}
                 objectFit={"cover"}

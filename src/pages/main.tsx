@@ -1,5 +1,5 @@
 import { useFetchBestDistrict } from "../hooks/use-fetch-best-location";
-import { Stack, useBreakpointValue, Tabs, Text } from "@chakra-ui/react"
+import { Stack, useBreakpointValue, Tabs, Text, VStack } from "@chakra-ui/react"
 import "@fontsource/inter";
 import { useEffect, useMemo } from "react";
 import { VOTE_IDS } from "../constants";
@@ -27,7 +27,11 @@ export const Main = () => {
         window.scrollTo(0, scrollPosition);
     }, [location, scrollPosition]);
 
-    const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const totalWidth = useBreakpointValue({ base: "100%", lg: "50%" });
+    const transform = useBreakpointValue({ base: "translateX(0%)", lg: "translateX(50%)" });
+    const marginTabsX = useBreakpointValue({ base: 4, lg: 0 });
+    const questionnaireTabX = useBreakpointValue({ base: 4, lg: 0 });
+
     const { districts, districtsLoading } = useFetchBestDistrict({ 
         parksAndNatureImportance: scores.find(s => s.id === VOTE_IDS.parksAndNature)?.value ?? 0, 
         transportLinksImportance: scores.find(s => s.id === VOTE_IDS.transportLinks)?.value ?? 0, 
@@ -47,20 +51,23 @@ export const Main = () => {
     return (
         <Stack
             direction={"column"}
-            width={isSmallScreen ? "90%" : "50%"}
-            transform={isSmallScreen ? "translateX(5%)" : "translateX(50%)"}
+            width={totalWidth}
+            transform={transform}
             marginTop={8}
             marginBottom={24}
             fontFamily={"Inter"}
         >
             {
                 activeTab === "questionnaire" && (
-                    <>
+                    <VStack
+                        paddingX={marginTabsX}
+                        alignItems={"flex-start"}
+                    >
                         <Text
                             fontSize={"md"}
                             fontWeight={"bold"}
                         >
-                            Hello there 👋 &nbsp; Welcome to HouseHop!
+                            Hello there 👋 &nbsp; Lets find your perfect London neighborhood! 🏡
                         </Text>
                         <Text
                             fontSize={"sm"}
@@ -68,7 +75,7 @@ export const Main = () => {
                         >
 
                             Assign votes to each category based on your priorities, and we'll deliver personalized, data-driven recommendations for the best districts in London that align with your lifestyle and housing preferences.                        </Text>
-                    </>
+                    </VStack>
                 )
             }
             <Tabs.Root
@@ -79,7 +86,9 @@ export const Main = () => {
                 value={activeTab}
                 lazyMount={true}
             >
-                <Tabs.List>
+                <Tabs.List
+                    marginX={marginTabsX}
+                >
                     <Tabs.Trigger value="questionnaire">
                         Vote
                     </Tabs.Trigger>
@@ -96,7 +105,9 @@ export const Main = () => {
                         weeklyPriceThreshold={weeklyPriceThreshold}
                     />
                 </Tabs.Content>
-                <Tabs.Content value="questionnaire">
+                <Tabs.Content value="questionnaire"
+                    paddingX={questionnaireTabX}
+                >
                     <VoteCategories />
                 </Tabs.Content>
             </Tabs.Root>

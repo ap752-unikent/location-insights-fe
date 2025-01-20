@@ -1,4 +1,4 @@
-import { Stack, Text, useBreakpointValue} from "@chakra-ui/react"
+import { Stack, Text, useBreakpointValue } from "@chakra-ui/react"
 import { Slider } from "../ui/slider"
 import { PaginationItems, PaginationNextTrigger, PaginationPrevTrigger, PaginationRoot } from "../ui/pagination"
 import { DistrictData } from "../../utils/api-client";
@@ -22,10 +22,11 @@ export const Results = ({
     weeklyPriceThreshold,
     budgetMonthly,
     setBudgetMonthly
-} : Props) => {
+}: Props) => {
 
-    const { state : {pageNumber}, updateState } = usePageState();
+    const { state: { pageNumber }, updateState } = usePageState();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const marginX = useBreakpointValue({ base: 4, lg: 0 });
 
     const handleSetPage = (newPage: number) => {
         window.scrollTo({
@@ -47,11 +48,13 @@ export const Results = ({
             <Stack
                 direction={"column"}
                 gap={0}
+                marginX={marginX}
             >
                 <Text
                     fontSize={"sm"}
                     color={"gray.500"}
-                    fontWeight={"bold"}>
+                    fontWeight={"bold"}
+                >
                     My budget is £{budgetMonthly} per month for one room (excluding bills)
                 </Text>
                 <Slider
