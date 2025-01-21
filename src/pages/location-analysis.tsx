@@ -2,7 +2,7 @@ import { Stack, useBreakpointValue, Text } from "@chakra-ui/react"
 import { LocationResultSkeleton } from "../components/location-result-skeleton/location-result-skeleton";
 import { useFetchDistrictInsights } from "../hooks/use-fetch-district-insights";
 import { ParksAndNature } from "../components/summaries/parks-and-nature/parks-and-nature";
-import { useLocation, useNavigate, useParams} from "react-router"
+import { useLocation, useNavigate, useParams } from "react-router"
 import { Nightlife } from "../components/summaries/nightlife/nightlife";
 import { Crime } from "../components/summaries/crime/crime";
 import { useFetchAggregates } from "../hooks/use-fetch-aggregates";
@@ -10,11 +10,13 @@ import { Convenience } from "../components/summaries/convenience/convenience";
 import { MdArrowBack } from "react-icons/md"
 import { useEffect } from "react";
 import { LocationAnalysisMainAnalysis } from "../components/location-analysis-main-analysis/location-analysis-main-analysis";
+import { DistrictExternalLink } from "../components/district-external-link/district-external-link";
 
 export const LocationAnalysis = () => {
 
     const { district } = useParams<{ district: string }>();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const externalLinkRenderedBelow = useBreakpointValue({ base: false, lg: true });
     const totalWidth = useBreakpointValue({ base: "100%", lg: "50%" });
     const transform = useBreakpointValue({ base: "translateX(0%)", lg: "translateX(50%)" });
 
@@ -60,12 +62,12 @@ export const LocationAnalysis = () => {
                     alignItems: "center",
                 }}
             >
-              <MdArrowBack
-                style={{
-                    marginRight: 4
-                }}
-                size={16}
-              />   Return to results
+                <MdArrowBack
+                    style={{
+                        marginRight: 4
+                    }}
+                    size={16}
+                />   Return to results
             </Text>
             <LocationResultSkeleton
                 district={district ?? ""}
@@ -73,9 +75,9 @@ export const LocationAnalysis = () => {
             >
                 <Stack
                     padding={4}
-                    gap={8} 
+                    gap={8}
                 >
-                    <LocationAnalysisMainAnalysis 
+                    <LocationAnalysisMainAnalysis
                         district={district}
                         districtData={districtData}
                         minPrice={minPrice}
@@ -97,7 +99,7 @@ export const LocationAnalysis = () => {
                     }
                     {
                         districtData && (
-                            <Crime 
+                            <Crime
                                 districtData={districtData}
                                 avCrimeRate={aggregates}
                             />
@@ -105,13 +107,27 @@ export const LocationAnalysis = () => {
                     }
                     {
                         districtData && (
-                            <Convenience 
+                            <Convenience
                                 districtData={districtData}
                             />
                         )
                     }
                 </Stack>
+                {
+                    district && !externalLinkRenderedBelow && (
+                        <DistrictExternalLink
+                            district={district}
+                        />
+                    )
+                }
             </LocationResultSkeleton>
+            {
+                district && externalLinkRenderedBelow && (
+                    <DistrictExternalLink
+                        district={district}
+                    />
+                )
+            }
         </Stack>
     )
 }

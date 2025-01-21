@@ -84,7 +84,7 @@ export const TransportLinks = ({
                                 fontSize={"sm"}
                                 color={"gray.500"}
                                 width={"100%"}
-                            >                            <b>Planning to commute often?</b> The average travel time from <b>{district} to Central London</b>, via public transport, is <b>{averageCommuteTimeToCentralLondon.toFixed(0)} minutes</b> during peak hours.
+                            >                            <b>Planning to commute often?</b> The average travel time from <b>{district} to Central London<sup>[1]</sup></b>, via public transport, is <b>{averageCommuteTimeToCentralLondon.toFixed(0)} minutes</b> during peak hours.
                             </Text>
                         </Stack>
                     }
@@ -106,10 +106,17 @@ export const TransportLinks = ({
                                 color={"gray.500"}
                                 width={"100%"}
                             >
-                                <b>Enjoy going out out?</b> Average travel time from Central London, via public transport, at night is <b>{averageTransitTimeFromCentralLondonNight.toFixed(0)} minutes</b>.
+                                <b>Enjoy going out out?</b> Average travel time from <b>Central London<sup>[1]</sup></b>, via public transport, at night is <b>{averageTransitTimeFromCentralLondonNight.toFixed(0)} minutes</b>.
                             </Text>
                         </Stack>
                     }
+                    <Text
+                        fontSize={"x-small"}
+                        color={"gray.500"}
+                        fontWeight={"bold"}
+                    >
+                        [1] Central London is defined as Trafalgar Square.
+                    </Text>
                 </Stack>
             </Stack>
         </SummarySkeleton >

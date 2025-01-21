@@ -22,7 +22,6 @@ export const LocationResultSkeleton = forwardRef<HTMLDivElement, PropsWithChildr
             >
                 <Heading 
                     district={district} 
-                    type={type}
                 />
                 {children}
             </Stack>

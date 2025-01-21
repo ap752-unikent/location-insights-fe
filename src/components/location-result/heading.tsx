@@ -7,12 +7,11 @@ const districtToImageSasUrls = districtToImageSasUrlsRaw as DistrictToImageSasUr
 
 type Props = {
     district: string;
-    type: "card" | "page";
 }
 
 const HEIGHT = 150;
 
-export const Heading = ({ district, type}: Props) => {
+export const Heading = ({ district}: Props) => {
 
     const borderRadius = useBreakpointValue({ base: 0, lg: "8px 8px 0 0" });
     const imageUrl = districtToImageSasUrls[district] ?? districtToImageSasUrls["default"];
