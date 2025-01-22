@@ -41,6 +41,10 @@ export const Main = () => {
         weeklyPriceThreshold: weeklyPriceThreshold });
 
     const handleTabChange = (newTab: TabType) => {
+        if(newTab === "results"){
+            // @ts-ignore
+            window.sa_event('results_tab_clicked');
+        }
         updateState({ activeTab: newTab });
     }
 

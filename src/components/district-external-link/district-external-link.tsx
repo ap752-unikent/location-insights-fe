@@ -6,6 +6,8 @@ export const DistrictExternalLink = ({ district }: { district: string }) => {
     
     const borderRadius = useBreakpointValue({ base: 0, lg: 8 });
     const handleClick = () => {
+        // @ts-ignore
+        window.sa_event('external_link_partner')
         window.open(`https://www.rightmove.co.uk/property-to-rent/${district}.html`, "_blank", 'noopener,noreferrer');
     }
     const fontSize = useBreakpointValue({ base: 14, lg: 16 });
