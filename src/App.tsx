@@ -12,6 +12,7 @@ import { LocationAnalysis } from './pages/location-analysis';
 import { PageStateProvider } from './contexts/page-state';
 import { Header } from './components/header/header';
 import { VotesStateProvider } from './contexts/votes';
+import { Toaster } from './components/ui/toaster';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ function App() {
         <PageStateProvider>
           <VotesStateProvider>
             <Header />
+            <Toaster />
             <Router>
               <Routes>
                 <Route path='/' element={<Main />} />
