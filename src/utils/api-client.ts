@@ -1,4 +1,5 @@
 import { getConfig } from './config';
+import localeCode from 'locale-code';
 
 type ApiClientProps = {
     url: string,
@@ -72,6 +73,14 @@ export const fetchDistrictInsights = async (district: string) => {
 
 export const fetchAggregates = async () => {
     const url = `${getConfig("API_URL")}/aggregates`
+    const responseJson = await apiClient({ url, method: 'GET' });
+
+    return responseJson;
+}
+
+export const fetchLocalCurrency = async () => {
+    const countryCode = localeCode.getCountryCode(navigator.language);
+    const url = `${getConfig("API_URL")}/exchange-rate/${countryCode}`
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;

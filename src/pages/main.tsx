@@ -128,8 +128,8 @@ export const Main = () => {
                     <Results
                         districts={districts}
                         districtsLoading={districtsLoading}
-                        budgetMonthly={budgetMonthly}
-                        setBudgetMonthly={handleSetBudgetMonthly}
+                        budgetMonthlyGbp={budgetMonthly}
+                        setBudgetMonthlyGbp={handleSetBudgetMonthly}
                         weeklyPriceThreshold={weeklyPriceThreshold}
                     />
                 </Tabs.Content>

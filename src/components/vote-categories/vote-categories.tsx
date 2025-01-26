@@ -5,7 +5,6 @@ import { Button, Stack } from "@chakra-ui/react";
 import { FaVoteYea, FaArrowRight } from "react-icons/fa";
 import { Category } from "./category";
 import { usePageState } from "../../contexts/page-state";
-import { handleResultsTabClickOnDisabled } from "../../utils/handle-results-click-on-disabled";
 
 export const VoteCategories = () => {
 

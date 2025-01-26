@@ -2,16 +2,18 @@ import { Stack, Text, useBreakpointValue } from "@chakra-ui/react"
 import { Slider } from "../ui/slider"
 import { PaginationItems, PaginationNextTrigger, PaginationPrevTrigger, PaginationRoot } from "../ui/pagination"
 import { DistrictData } from "../../utils/api-client";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { LocationResult } from "../location-result/location-result";
 import { usePageState } from "../../contexts/page-state";
+import { useLocalCurrency } from "../../utils/use-local-currency";
+import localeCode from "locale-code";
 
 type Props = {
     districts: DistrictData[] | undefined;
     districtsLoading: boolean;
     weeklyPriceThreshold: number;
-    budgetMonthly: number;
-    setBudgetMonthly: (value: number) => void;
+    budgetMonthlyGbp: number;
+    setBudgetMonthlyGbp: (value: number) => void;
 }
 
 const ITEMS_PER_PAGE = 5;
@@ -20,11 +22,14 @@ export const Results = ({
     districts,
     districtsLoading,
     weeklyPriceThreshold,
-    budgetMonthly,
-    setBudgetMonthly
+    budgetMonthlyGbp,
+    setBudgetMonthlyGbp
 }: Props) => {
 
+    const countryCode = localeCode.getCountryCode(navigator.language);
     const { state: { pageNumber }, updateState } = usePageState();
+    const { data: currencyData } = useLocalCurrency();
+    const currencyValue = useMemo(() => Number((currencyData?.exchangeRate ?? 1) * budgetMonthlyGbp).toFixed(0), [currencyData, budgetMonthlyGbp]);
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const marginX = useBreakpointValue({ base: 4, lg: 0 });
 
@@ -55,13 +60,13 @@ export const Results = ({
                     color={"gray.500"}
                     fontWeight={"bold"}
                 >
-                    My budget is £{budgetMonthly} per month for one room (excluding bills)
+                    My budget is {(countryCode !== undefined && currencyData?.exchangeRate !== undefined && countryCode.toUpperCase() !== "GB") ? `${currencyValue} ${currencyData?.currency} (£${budgetMonthlyGbp})` : `£${budgetMonthlyGbp}`}  per month for one room (excluding bills)
                 </Text>
                 <Slider
                     fontWeight={"bold"}
                     fontSize={"xs"}
-                    onValueChange={(details) => setBudgetMonthly(details.value[0])}
-                    value={[budgetMonthly]}
+                    onValueChange={(details) => setBudgetMonthlyGbp(details.value[0])}
+                    value={[budgetMonthlyGbp]}
                     width={isSmallScreen ? "100%" : "50%"}
                     variant={"outline"}
                     min={400}

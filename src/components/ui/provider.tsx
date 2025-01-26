@@ -25,18 +25,24 @@ const customConfig = defineConfig({
           100: { value: "#EE0F0F" },
         },
       },
-    }
+    },
   },
 })
 
 const customSystem = createSystem(defaultConfig, customConfig)
 
 export function Provider(props: ColorModeProviderProps) {
+
+  const config = {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  }
+
   return (
     <ChakraProvider
       value={customSystem}
     >
-      <ColorModeProvider {...props} />
+      <ColorModeProvider {...props} forcedTheme="light"/>
     </ChakraProvider>
   )
 }
