@@ -12,7 +12,7 @@ import { VoteCategories } from "../components/vote-categories/vote-categories";
 import { useVotesContext } from "../contexts/votes";
 import { useVotesToScores } from "../hooks/use-votes-to-scores";
 import { allVotesUsed } from "../utils/all-votes-used";
-import { toaster } from "../components/ui/toaster";
+import { handleResultsTabClickOnDisabled } from "../utils/handle-results-click-on-disabled";
 
 export const Main = () => {
 
@@ -42,42 +42,17 @@ export const Main = () => {
         weeklyPriceThreshold: weeklyPriceThreshold
     });
 
-    const handleTabChange = (newTab: TabType) => {
-        if (newTab === "results") {
-
-            if (!allVotesUsedMem) {
-                handleResultsTabClickOnDisabled();
-                return;
-            }
-
-            // @ts-ignore
-            window.sa_event('results_tab_clicked');
-        }
-        updateState({ activeTab: newTab });
-    }
-
     const handleSetBudgetMonthly = (value: number) => {
         updateState({ budgetMonthly: value });
-    }
-
-    const handleResultsTabClickOnDisabled = () => {
-
-        const usedVotes = votes.reduce((acc, category) => acc + (category.votes ?? 0), 0);
-        const votesRemaining = TOTAL_VOTES - usedVotes;
-
-        toaster.create({
-            title: `You still have ${votesRemaining} ${votesRemaining > 1 ? "votes" : "vote"} to assign before you can see results`,
-            type: "warning"
-        });
-        // @ts-ignore
-        window.sa_event('results_tab_clicked_disabled');
     }
 
     const handleResultsTabClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         
         if (!allVotesUsedMem) {
-            handleResultsTabClickOnDisabled();
+            handleResultsTabClickOnDisabled({
+                votes
+            });
             return;
         }
 

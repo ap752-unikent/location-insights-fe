@@ -5,6 +5,7 @@ import { Button, Stack } from "@chakra-ui/react";
 import { FaVoteYea, FaArrowRight } from "react-icons/fa";
 import { Category } from "./category";
 import { usePageState } from "../../contexts/page-state";
+import { handleResultsTabClickOnDisabled } from "../../utils/handle-results-click-on-disabled";
 
 export const VoteCategories = () => {
 
@@ -15,7 +16,20 @@ export const VoteCategories = () => {
         return state.votes.reduce((acc, category) => acc + (category.votes ?? 0), 0);
     }, [state.votes]);
 
+    const handleAddVote = useCallback((category: VoteCategory) => {
+        // @ts-ignore
+        window.sa_event('vote_added_clicked', {
+            category: category.name
+        });
+        updateCategory({ ...category, votes: (category.votes ?? 0) + 1 }, "increment");
+    }, [updateCategory])
+
     const handleRemove = useCallback((category: VoteCategory) => {
+
+        // @ts-ignore
+        window.sa_event('vote_remove_clicked', {
+            category: category.name
+        });
 
         if (category.votes === undefined || category.votes === 0) {
             return;
@@ -25,6 +39,12 @@ export const VoteCategories = () => {
     }, [updateCategory]);
 
     const remainingVotes = TOTAL_VOTES - votesUsed;
+
+    const handleResultClick = () => {
+        // @ts-ignore
+        window.sa_event('see_results_button_clicked');
+        updateState({ activeTab: "results" })
+    }
 
     return (
         <>
@@ -62,7 +82,7 @@ export const VoteCategories = () => {
                             <Category
                                 key={category.id}
                                 category={category}
-                                onClick={() => updateCategory({ ...category, votes: (category.votes ?? 0) + 1 }, "increment")}
+                                onClick={() => handleAddVote(category)}
                                 onRemove={() => handleRemove(category)}
                             />
                         ))
@@ -74,7 +94,7 @@ export const VoteCategories = () => {
                 variant={"solid"}
                 disabled={votesUsed < TOTAL_VOTES}
                 backgroundColor="secondary"
-                onClick={() => updateState({ activeTab: "results" })}
+                onClick={handleResultClick}
             >
                 See results
                 <FaArrowRight
