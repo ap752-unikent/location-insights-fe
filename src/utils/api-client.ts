@@ -32,6 +32,7 @@ export type FetchBestLocationProps = {
 
 export type DistrictData = {
     district: string;
+    districtName: string;
     rawScore: number;
     normalizedScore: number;
     parksAndNatureScore: number,

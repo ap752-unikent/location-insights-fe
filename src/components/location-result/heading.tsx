@@ -6,15 +6,16 @@ type DistrictToImageSasUrls = { [district: string]: string };
 const districtToImageSasUrls = districtToImageSasUrlsRaw as DistrictToImageSasUrls;
 
 type Props = {
-    district: string;
+    districtCode: string;
+    districtName: string;
 }
 
 const HEIGHT = 150;
 
-export const Heading = ({ district}: Props) => {
+export const Heading = ({ districtCode, districtName}: Props) => {
 
     const borderRadius = useBreakpointValue({ base: 0, lg: "8px 8px 0 0" });
-    const imageUrl = districtToImageSasUrls[district] ?? districtToImageSasUrls["default"];
+    const imageUrl = districtToImageSasUrls[districtCode] ?? districtToImageSasUrls["default"];
     const [primary] = useToken("colors", ["primary"]);
     const rgba0 = hexToRgba(primary, 0);
     const rgba1 = hexToRgba(primary, 1);
@@ -46,7 +47,7 @@ export const Heading = ({ district}: Props) => {
                 bottom={4}
                 left={4}
             >
-                {district}
+                {districtCode} {districtName}
             </Text>
         </Stack>
     )

@@ -18,6 +18,7 @@ type Props = DistrictData & {
 
 export const LocationResult = ({
     district,
+    districtName,
     parksAndNatureScore,
     transportLinksScore,
     convenienceScore,
@@ -45,7 +46,8 @@ export const LocationResult = ({
 
     return (
         <LocationResultSkeleton
-            district={district}
+            districtCode={district}
+            districtName={districtName}
             type="card"
         >
             <Stack

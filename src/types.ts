@@ -97,6 +97,7 @@ type Station = {
 
 export type DistrictInsight = {
     district: string;
+    districtName: string;
     weighted: WeightedData;
     stations: Station[];
     center: PostcodeLocationWithPrice;

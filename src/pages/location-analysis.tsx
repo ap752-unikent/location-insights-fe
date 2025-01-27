@@ -93,7 +93,8 @@ export const LocationAnalysis = () => {
                 )
             }
             <LocationResultSkeleton
-                district={district ?? ""}
+                districtCode={district ?? ""}
+                districtName={districtData?.districtName ?? ""}
                 type="page"
             >
                 <Stack
