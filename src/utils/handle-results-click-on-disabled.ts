@@ -17,5 +17,5 @@ export const handleResultsTabClickOnDisabled = ({
         type: "warning"
     });
     // @ts-ignore
-    window.sa_event('results_tab_clicked_disabled');
+    window.sa_event('results_action_clicked_disabled');
 }

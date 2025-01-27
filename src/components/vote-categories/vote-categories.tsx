@@ -5,6 +5,7 @@ import { Button, Stack } from "@chakra-ui/react";
 import { FaVoteYea, FaArrowRight } from "react-icons/fa";
 import { Category } from "./category";
 import { usePageState } from "../../contexts/page-state";
+import { handleResultsTabClickOnDisabled } from "../../utils/handle-results-click-on-disabled";
 
 export const VoteCategories = () => {
 
@@ -40,6 +41,11 @@ export const VoteCategories = () => {
     const remainingVotes = TOTAL_VOTES - votesUsed;
 
     const handleResultClick = () => {
+        if(remainingVotes > 0) {
+            handleResultsTabClickOnDisabled({ votes: state.votes });
+            return;
+        }
+
         // @ts-ignore
         window.sa_event('see_results_button_clicked');
         updateState({ activeTab: "results" })
@@ -91,7 +97,8 @@ export const VoteCategories = () => {
             <Button
                 marginTop={8}
                 variant={"solid"}
-                disabled={votesUsed < TOTAL_VOTES}
+                opacity={votesUsed < TOTAL_VOTES ? 0.5 : 1}
+                cursor={votesUsed < TOTAL_VOTES ? "not-allowed" : "pointer"}
                 backgroundColor="secondary"
                 onClick={handleResultClick}
             >

@@ -31,6 +31,7 @@ export const Category = ({
                 alignItems={"center"}
                 onClick={onClick}
                 paddingY={4}
+                flex={1}
             >
                 {icon}
                 <Text
