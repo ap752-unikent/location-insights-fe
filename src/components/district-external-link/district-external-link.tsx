@@ -4,6 +4,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 
 export const DistrictExternalLink = ({ district }: { district: string }) => {
     
+    const isSmallScreen = useBreakpointValue({ base: true, lg: false });
     const borderRadius = useBreakpointValue({ base: 0, lg: 8 });
     const handleClick = () => {
         // @ts-ignore
@@ -21,12 +22,13 @@ export const DistrictExternalLink = ({ district }: { district: string }) => {
             justifyContent={"space-between"}
             padding={4}
             paddingY={8}
-            boxShadow={"md"}
+            boxShadow={isSmallScreen ? "none" : "md"}
             borderRadius={borderRadius}
             marginTop={4}
             variant={"outline"}
             alignItems={"center"}
             onClick={handleClick}
+            border={isSmallScreen ? "none" : "auto"}
         >
             <HStack
                 alignItems={"center"}

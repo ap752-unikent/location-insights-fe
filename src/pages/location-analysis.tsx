@@ -7,13 +7,15 @@ import { Nightlife } from "../components/summaries/nightlife/nightlife";
 import { Crime } from "../components/summaries/crime/crime";
 import { useFetchAggregates } from "../hooks/use-fetch-aggregates";
 import { Convenience } from "../components/summaries/convenience/convenience";
-import { MdArrowBack } from "react-icons/md"
-import { useEffect } from "react";
+import { MdArrowBack, MdArrowForward } from "react-icons/md"
+import { useEffect, useMemo } from "react";
 import { LocationAnalysisMainAnalysis } from "../components/location-analysis-main-analysis/location-analysis-main-analysis";
 import { DistrictExternalLink } from "../components/district-external-link/district-external-link";
+import { usePageState } from "../contexts/page-state";
 
 export const LocationAnalysis = () => {
 
+    const { state: { activeTab } } = usePageState();
     const { district } = useParams<{ district: string }>();
     const isSmallScreen = useBreakpointValue({ base: true, md: false });
     const externalLinkRenderedBelow = useBreakpointValue({ base: false, lg: true });
@@ -24,6 +26,29 @@ export const LocationAnalysis = () => {
     const { aggregates } = useFetchAggregates();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const isExternal = useMemo(() => {
+        const referrer = document.referrer;
+        const isExternal = referrer && referrer.indexOf(window.location.origin) === -1;
+        return isExternal;
+    }, []);
+
+    const canGoBackToResults = useMemo(() => {
+        return activeTab === "results";
+    }, [window.history.state.length]);
+
+    const backMessage = useMemo(() => {
+
+        if (isExternal) {
+            return "Explore more areas in London using our neighbourhood insights tool";
+        }
+
+        if (canGoBackToResults) {
+            return "Return to results";
+        }
+
+        return "Return to votes";
+    }, [canGoBackToResults])
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -40,6 +65,15 @@ export const LocationAnalysis = () => {
     const maxPrice = Math.max(...prices);
     const minPrice = Math.min(...prices);
 
+    const handleBackClick = () => {
+        if (isExternal) {
+            navigate("/");
+            return;
+        }
+
+        navigate(-1);
+    }
+
     return (
         <Stack
             direction={"column"}
@@ -49,26 +83,15 @@ export const LocationAnalysis = () => {
             marginBottom={24}
             fontFamily={"Inter"}
         >
-            <Text
-                fontSize={"xs"}
-                fontWeight={"bold"}
-                color={"gray.500"}
-                onClick={() => navigate(-1)}
-                cursor={"pointer"}
-                alignSelf={"flex-start"}
-                marginLeft={isSmallScreen ? 2 : 0}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
-                <MdArrowBack
-                    style={{
-                        marginRight: 4
-                    }}
-                    size={16}
-                />   Return to results
-            </Text>
+            {
+                !isExternal && (
+                    <BackLink
+                        handleBackClick={handleBackClick}
+                        isSmallScreen={isSmallScreen}
+                        backMessage={backMessage}
+                    />
+                )
+            }
             <LocationResultSkeleton
                 district={district ?? ""}
                 type="page"
@@ -128,6 +151,65 @@ export const LocationAnalysis = () => {
                     />
                 )
             }
+            {
+                isExternal && (
+                    <BackLink
+                        handleBackClick={handleBackClick}
+                        isSmallScreen={isSmallScreen}
+                        backMessage={backMessage}
+                        isExternal={true}
+                    />
+                )
+            }
         </Stack>
+    )
+}
+
+type Props = {
+    handleBackClick: () => void;
+    isSmallScreen: boolean | undefined;
+    backMessage: string;
+    isExternal?: boolean;
+}
+
+const BackLink = ({ handleBackClick, isSmallScreen, backMessage, isExternal }: Props) => {
+    return (
+        <Text
+            fontSize={"xs"}
+            fontWeight={"bold"}
+            color={"gray.500"}
+            onClick={handleBackClick}
+            cursor={"pointer"}
+            alignSelf={"flex-start"}
+            marginTop={isExternal ? 2 : 0}
+            marginLeft={isSmallScreen ? 2 : 0}
+            style={{
+                display: "flex",
+                alignItems: "center",
+            }}
+        >
+            {
+                isExternal ? (
+                    <>
+                        {backMessage}
+                        < MdArrowForward
+                            style={{
+                                marginRight: 4
+                            }}
+                            size={16}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <MdArrowBack
+                            style={{
+                                marginRight: 4
+                            }}
+                            size={16}
+                        />   {backMessage}
+                    </>
+                )
+            }
+        </Text>
     )
 }
