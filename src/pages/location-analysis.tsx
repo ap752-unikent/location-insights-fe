@@ -12,6 +12,7 @@ import { useEffect, useMemo } from "react";
 import { LocationAnalysisMainAnalysis } from "../components/location-analysis-main-analysis/location-analysis-main-analysis";
 import { DistrictExternalLink } from "../components/district-external-link/district-external-link";
 import { usePageState } from "../contexts/page-state";
+import { Heading } from "../components/location-result/heading";
 
 export const LocationAnalysis = () => {
 
@@ -28,6 +29,11 @@ export const LocationAnalysis = () => {
     const location = useLocation();
 
     const isExternal = useMemo(() => {
+
+        if(activeTab === "results") {
+            return false;
+        }
+
         const referrer = document.referrer;
         const isExternal = referrer && referrer.indexOf(window.location.origin) === -1;
         return isExternal;
@@ -74,6 +80,12 @@ export const LocationAnalysis = () => {
         navigate(-1);
     }
 
+    const heading = useMemo(() => (
+        <Heading
+            districtCode={district ?? ""}
+            districtName={districtData?.districtName ?? ""}
+        />), [district, districtData?.districtName])
+
     return (
         <Stack
             direction={"column"}
@@ -93,9 +105,7 @@ export const LocationAnalysis = () => {
                 )
             }
             <LocationResultSkeleton
-                districtCode={district ?? ""}
-                districtName={districtData?.districtName ?? ""}
-                type="page"
+                heading={heading}
             >
                 <Stack
                     padding={4}

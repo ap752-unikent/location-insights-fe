@@ -1,11 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { TOTAL_VOTES, VoteCategory } from "../../constants";
 import { useVotesContext } from "../../contexts/votes";
-import { Button, Stack } from "@chakra-ui/react";
+import { Button, Stack, Text } from "@chakra-ui/react";
 import { FaVoteYea, FaArrowRight } from "react-icons/fa";
 import { Category } from "./category";
 import { usePageState } from "../../contexts/page-state";
 import { handleResultsTabClickOnDisabled } from "../../utils/handle-results-click-on-disabled";
+import { toaster } from "../ui/toaster";
 
 export const VoteCategories = () => {
 
@@ -16,11 +17,22 @@ export const VoteCategories = () => {
         return state.votes.reduce((acc, category) => acc + (category.votes ?? 0), 0);
     }, [state.votes]);
 
+    const remainingVotes = TOTAL_VOTES - votesUsed;
+
     const handleAddVote = useCallback((category: VoteCategory) => {
         // @ts-ignore
         window.sa_event('vote_added_clicked', {
             category: category.name
         });
+
+        if (remainingVotes === 0) {
+            toaster.create({
+                title: `You have already used all your votes.`,
+                type: "warning"
+            });
+            return;
+        }
+
         updateCategory({ ...category, votes: (category.votes ?? 0) + 1 }, "increment");
     }, [updateCategory])
 
@@ -38,10 +50,8 @@ export const VoteCategories = () => {
         updateCategory({ ...category, votes: category.votes - 1 }, "decrement");
     }, [updateCategory]);
 
-    const remainingVotes = TOTAL_VOTES - votesUsed;
-
     const handleResultClick = () => {
-        if(remainingVotes > 0) {
+        if (remainingVotes > 0) {
             handleResultsTabClickOnDisabled({ votes: state.votes });
             return;
         }
@@ -54,28 +64,43 @@ export const VoteCategories = () => {
     return (
         <>
             <Stack
-                direction={"row"}
-                marginBottom={2}
-                alignItems={"center"}
-                justifyContent={"space-between"}
+                direction={"column"}
+                gap={0}
             >
                 <Stack
                     direction={"row"}
-                    gap={2}
+                    alignItems={"center"}
+                    justifyContent={"space-between"}
                 >
-                    {Array.from(Array(remainingVotes).keys()).map((index) => (
-                        <FaVoteYea
-                            key={index}
-                            size={20}
-                        />
-                    ))}
+                    <Stack
+                        direction={"row"}
+                        gap={2}
+                    >
+                        {Array.from(Array(remainingVotes).keys()).map((index) => (
+                            <FaVoteYea
+                                key={index}
+                                size={20}
+                            />
+                        ))}
+                    </Stack>
+                    <Button
+                        variant={"plain"}
+                        onClick={() => clearVotes()}
+                    >
+                        Clear
+                    </Button>
                 </Stack>
-                <Button
-                    variant={"plain"}
-                    onClick={() => clearVotes()}
-                >
-                    Clear
-                </Button>
+                {
+                    remainingVotes > 0 && (
+                        <Text
+                            fontSize={"xs"}
+                            color={"gray.500"}
+                            fontWeight={"bold"}
+                            marginBottom={8}
+                        >
+                            {remainingVotes} vote{remainingVotes > 1 ? "s" : ""} remaining
+                        </Text>)
+                }
             </Stack>
             {
                 <Stack

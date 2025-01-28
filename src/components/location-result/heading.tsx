@@ -1,6 +1,7 @@
 import hexToRgba from "hex-to-rgba";
 import { Text, Image, Box, Stack, useToken, useBreakpointValue } from "@chakra-ui/react"
 import districtToImageSasUrlsRaw from "../../assets/district-to-image-sas-urls.json";
+import { useNavigate } from "react-router-dom";
 
 type DistrictToImageSasUrls = { [district: string]: string };
 const districtToImageSasUrls = districtToImageSasUrlsRaw as DistrictToImageSasUrls;
@@ -8,22 +9,26 @@ const districtToImageSasUrls = districtToImageSasUrlsRaw as DistrictToImageSasUr
 type Props = {
     districtCode: string;
     districtName: string;
+    handleHeaderClick?: () => void;
 }
 
 const HEIGHT = 150;
 
-export const Heading = ({ districtCode, districtName}: Props) => {
+export const Heading = ({ districtCode, districtName, handleHeaderClick}: Props) => {
 
     const borderRadius = useBreakpointValue({ base: 0, lg: "8px 8px 0 0" });
     const imageUrl = districtToImageSasUrls[districtCode] ?? districtToImageSasUrls["default"];
     const [primary] = useToken("colors", ["primary"]);
     const rgba0 = hexToRgba(primary, 0);
     const rgba1 = hexToRgba(primary, 1);
+    const navigate = useNavigate();
 
     return (
         <Stack
             height={HEIGHT}
             position={"relative"}
+            cursor={handleHeaderClick ? "pointer" : "default"}
+            onClick={handleHeaderClick}
         >
             <Box
                 w='100%'

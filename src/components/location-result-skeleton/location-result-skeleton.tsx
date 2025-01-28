@@ -3,13 +3,11 @@ import { Stack, useBreakpointValue } from "@chakra-ui/react";
 import { Heading } from "../location-result/heading";
 
 type Props = {
-    districtCode: string;
-    districtName: string;
-    type: "card" | "page";
+    heading: React.ReactNode;
 };
 
 export const LocationResultSkeleton = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
-    ({ districtCode, districtName, children, type}, ref) => {
+    ({ children, heading}, ref) => {
 
         const borderRadius = useBreakpointValue({ base: 0, lg: 8 });
 
@@ -21,10 +19,7 @@ export const LocationResultSkeleton = forwardRef<HTMLDivElement, PropsWithChildr
                 ref={ref}
                 gap={0}
             >
-                <Heading 
-                    districtCode={districtCode}
-                    districtName={districtName}
-                />
+                {heading}
                 {children}
             </Stack>
         );

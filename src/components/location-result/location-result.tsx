@@ -10,7 +10,8 @@ import { MdArrowForward } from "react-icons/md"
 import { LocationResultSkeleton } from "../location-result-skeleton/location-result-skeleton"
 import { useNavigate } from "react-router-dom"
 import { usePageState } from "../../contexts/page-state"
-import { categories, VOTE_IDS} from "../../constants"
+import { categories, VOTE_IDS } from "../../constants"
+import { Heading } from "./heading"
 
 type Props = DistrictData & {
     yourBudget: number;
@@ -44,11 +45,17 @@ export const LocationResult = ({
         navigate(`/location-analysis/${district}`);
     }
 
-    return (
-        <LocationResultSkeleton
+    const heading = useMemo(() => (
+        <Heading
             districtCode={district}
             districtName={districtName}
-            type="card"
+            handleHeaderClick={handleViewDetails}
+        />
+    ), [district, districtName, handleViewDetails]);
+
+    return (
+        <LocationResultSkeleton
+            heading={heading}
         >
             <Stack
                 padding={padding}
