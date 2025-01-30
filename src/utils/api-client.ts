@@ -81,7 +81,7 @@ export const fetchAggregates = async () => {
 
 export const fetchLocalCurrency = async () => {
     const countryCode = localeCode.getCountryCode(navigator.language);
-    const url = `${getConfig("API_URL")}/exchange-rate/${countryCode}`
+    const url = `${getConfig("API_URL")}/internationalization/exchange-rate/${countryCode}`
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;
