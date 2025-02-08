@@ -4,7 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import icon from '../../assets/record.png';
 import { Stack, Text, useBreakpointValue } from "@chakra-ui/react";
 import { DistrictInsight } from "../../types";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { LocaleText, useLocaleString } from "../../contexts/internationalization";
 
 let DefaultIcon = L.icon({
     iconUrl: icon,
@@ -33,6 +34,12 @@ export const AnalysisMap = ({
     const mapSize = useBreakpointValue({ base: window.innerWidth - 32, lg: 300 });
     const [hasPageLoaded, setHasPageLoaded] = useState(false);
 
+    const centerLabel = useLocaleString({ id: "centerMarker" });
+    const eastLabel = useLocaleString({ id: "eastMarker" });
+    const westLabel = useLocaleString({ id: "westMarker" });
+    const northLabel = useLocaleString({ id: "northMarker" });
+    const southLabel = useLocaleString({ id: "southMarker" });
+
     useEffect(() => {
         const timeout = setTimeout(() => setHasPageLoaded(true), 1000);
         return () => clearTimeout(timeout);
@@ -40,23 +47,23 @@ export const AnalysisMap = ({
 
     const markers: CustomMarker[] = [
         {
-            label: "Center",
+            label: centerLabel,
             ...district.center,
         },
         {
-            label: "East",
+            label: eastLabel,
             ...district.east,
         },
         {
-            label: "West",
+            label: westLabel,
             ...district.west,
         },
         {
-            label: "North",
+            label: northLabel,
             ...district.north,
         },
         {
-            label: "South",
+            label: southLabel,
             ...district.south,
         }
     ]
@@ -66,13 +73,12 @@ export const AnalysisMap = ({
             gap={0}
             alignSelf={"flex-start"}
         >
-            <Text
+            <LocaleText
+                id={"pointsAnalysed"}
                 fontSize={"xs"}
                 fontWeight={"extrabold"}
                 color={"gray.500"}
-            >
-                Points analysed
-            </Text>
+            />
             {
                 hasPageLoaded && (
                     <MapContainer

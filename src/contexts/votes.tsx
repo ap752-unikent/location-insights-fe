@@ -4,6 +4,7 @@ import { categories } from '../constants';
 import { allVotesUsed } from '../utils/all-votes-used';
 import { usePageState } from './page-state';
 import { useEditable } from '@chakra-ui/react';
+import { useLocaleCategories } from '../hooks/use-locale-categories';
 
 export type VotesState = {
   votes: VoteCategory[];
@@ -15,6 +16,7 @@ type VotesStateContextValue = {
   state: VotesState;
   updateCategory: (category: VoteCategory, direction: Direction) => void;
   clearVotes: () => void;
+  localeCategories: VoteCategory[];
 }
 
 const VotesStateContext = createContext<VotesStateContextValue | undefined>(undefined);
@@ -31,6 +33,8 @@ export const VotesStateProvider: React.FC<VotesStateProviderProps> = ({ children
   const [state, setState] = useState<VotesState>({
     votes: initialVotes
   });
+
+  const localeCategories = useLocaleCategories({ voteCategories: state.votes });
 
   useEffect(() => {
     updateState({ pageNumber: 1 });
@@ -60,7 +64,7 @@ export const VotesStateProvider: React.FC<VotesStateProviderProps> = ({ children
   }
 
   return (
-    <VotesStateContext.Provider value={{ state, updateCategory, clearVotes }}>
+    <VotesStateContext.Provider value={{ state, updateCategory, clearVotes, localeCategories}}>
       {children}
     </VotesStateContext.Provider>
   );

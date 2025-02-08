@@ -4,6 +4,7 @@ import { DistrictInsight } from "../../types";
 import { AnalysisMap } from "../analysis-map/analysis-map";
 import { RangeChart } from "../location-result/range-chart";
 import { TransportLinks } from "../summaries/transport-links/transport-links";
+import { useLocaleString } from "../../contexts/internationalization";
 
 
 type Props = {
@@ -20,9 +21,12 @@ export const LocationAnalysisMainAnalysis = ({
     maxPrice
 } : Props) => {
 
-    const chartWidth = useBreakpointValue({ base: "110%", md: "100%" });
+    const chartWidth = useBreakpointValue({ base: "100%", md: "100%" });
     const gap = useBreakpointValue({ base: 8, lg: 4 });
     const direction = useBreakpointValue<"column" | "row">({ base: "column", xl: "row" });
+
+    const averageMonthlyRentText = useLocaleString({id: "averageMonthlyRentText"});
+    const rentTextGraph = useLocaleString({id: "rentTextGraph"});
 
     return (
         <Stack
@@ -50,7 +54,7 @@ export const LocationAnalysisMainAnalysis = ({
                             <RangeChart
                                 max={maxPrice * 4}
                                 min={minPrice * 4}
-                                topYLabel="Rent"
+                                topYLabel={rentTextGraph}
                                 unit="£"
                                 height={100}
                                 width={chartWidth}
@@ -60,7 +64,7 @@ export const LocationAnalysisMainAnalysis = ({
                                 color={"gray.500"}
                                 fontWeight={"bold"}
                             >
-                                The range of average monthly rent for one room in this area.
+                                {averageMonthlyRentText}
                             </Text>
                         </Stack>
                     </Stack>

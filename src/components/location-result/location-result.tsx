@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom"
 import { usePageState } from "../../contexts/page-state"
 import { categories, VOTE_IDS } from "../../constants"
 import { Heading } from "./heading"
+import { LocaleText, useLocaleString } from "../../contexts/internationalization"
 
 type Props = DistrictData & {
     yourBudget: number;
@@ -40,6 +41,18 @@ export const LocationResult = ({
     const progressBarHeight = useBreakpointValue({ base: 8, md: 12 });
     const compatibilityTextSize = useBreakpointValue({ base: "10px", md: "xs" });
 
+    const parksAndNatureText = useLocaleString({ id: "parksAndNatureLabel" });
+    const transportLinksText = useLocaleString({ id: "transportLinksLabel" });
+    const convenienceText = useLocaleString({ id: "convenienceLabel" });
+    const crimeText = useLocaleString({ id: "safetyLabel" });
+    const nightlifeText = useLocaleString({ id: "nightlifeLabel" });
+    const rentTextGraph = useLocaleString({ id: "rentTextGraph" });
+    const yourBudgetTextGraph = useLocaleString({ id: "yourBudgetGraph" });
+    const exploreText = useLocaleString({
+        id: "exploreDistrict",
+        replacements: { district }
+    });
+
     const handleViewDetails = () => {
         updateState({ scrollPosition: window.scrollY });
         navigate(`/location-analysis/${district}`);
@@ -61,14 +74,14 @@ export const LocationResult = ({
                 padding={padding}
                 paddingBottom={0}
             >
-                <Text
+                <LocaleText
                     fontSize={compatibilityTextSize}
                     fontWeight={"bold"}
                     color={"gray.400"}
                     marginBottom={-2}
-                >
-                    Compatibility score: {(normalizedScore * 100).toFixed(0)}
-                </Text>
+                    id="compatibilityScoreText"
+                    replacements={{ score: (normalizedScore * 100).toFixed(0) }}
+                />
                 <ProgressBar
                     value={normalizedScore}
                     color={color}
@@ -82,19 +95,19 @@ export const LocationResult = ({
                         bottomValue={yourBudget * 4}
                         min={min * 4}
                         max={max * 4}
-                        bottomYLabel="Your budget"
-                        topYLabel="Rent"
+                        bottomYLabel={yourBudgetTextGraph}
+                        topYLabel={rentTextGraph}
                         unit="£"
-                        width={"105%"}
+                        width={"100%"}
                     />
                     <div style={{ width: 16 }} />
                     <IndividualScores
                         scores={[
-                            { score: parksAndNatureScore, label: "Parks & Nature", icon: categories.find(c => c.id === VOTE_IDS.parksAndNature)?.icon },
-                            { score: transportLinksScore, label: "Transport Links", icon: categories.find(c => c.id === VOTE_IDS.transportLinks)?.icon },
-                            { score: nightlifeScore, label: "Nightlife", icon: categories.find(c => c.id === VOTE_IDS.nightlife)?.icon },
-                            { score: convenienceScore, label: "Convenience", icon: categories.find(c => c.id === VOTE_IDS.convenienceStores)?.icon },
-                            { score: crimeScore, label: "Safety", icon: categories.find(c => c.id === VOTE_IDS.safety)?.icon }
+                            { score: parksAndNatureScore, label: parksAndNatureText, icon: categories.find(c => c.id === VOTE_IDS.parksAndNature)?.icon },
+                            { score: transportLinksScore, label: transportLinksText, icon: categories.find(c => c.id === VOTE_IDS.transportLinks)?.icon },
+                            { score: nightlifeScore, label: nightlifeText, icon: categories.find(c => c.id === VOTE_IDS.nightlife)?.icon },
+                            { score: convenienceScore, label: convenienceText, icon: categories.find(c => c.id === VOTE_IDS.convenienceStores)?.icon },
+                            { score: crimeScore, label: crimeText, icon: categories.find(c => c.id === VOTE_IDS.safety)?.icon }
                         ]}
                     />
 
@@ -111,7 +124,8 @@ export const LocationResult = ({
                 marginRight={isSmallScreen ? 0 : 2}
                 onClick={handleViewDetails}
             >
-                Explore {district} <MdArrowForward />
+                {exploreText}
+                <MdArrowForward />
             </Button>
         </LocationResultSkeleton>
     )

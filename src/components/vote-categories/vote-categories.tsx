@@ -7,15 +7,19 @@ import { Category } from "./category";
 import { usePageState } from "../../contexts/page-state";
 import { handleResultsTabClickOnDisabled } from "../../utils/handle-results-click-on-disabled";
 import { toaster } from "../ui/toaster";
+import { LocaleText, useLocaleString } from "../../contexts/internationalization";
+import { useVotesRemainingToastText } from "../../hooks/use-votes-remaining-toast-text";
 
 export const VoteCategories = () => {
 
     const { updateState } = usePageState();
-    const { state, updateCategory, clearVotes } = useVotesContext();
+    const { updateCategory, clearVotes, localeCategories } = useVotesContext();
+    const votesRemainingToastText = useVotesRemainingToastText(localeCategories)
+    const votesAllUsedText = useLocaleString({ id: "allVotesUsedToast" });
 
     const votesUsed = useMemo(() => {
-        return state.votes.reduce((acc, category) => acc + (category.votes ?? 0), 0);
-    }, [state.votes]);
+        return localeCategories.reduce((acc, category) => acc + (category.votes ?? 0), 0);
+    }, [localeCategories]);
 
     const remainingVotes = TOTAL_VOTES - votesUsed;
 
@@ -27,7 +31,7 @@ export const VoteCategories = () => {
 
         if (remainingVotes === 0) {
             toaster.create({
-                title: `You have already used all your votes.`,
+                title: votesAllUsedText,
                 type: "warning"
             });
             return;
@@ -52,7 +56,7 @@ export const VoteCategories = () => {
 
     const handleResultClick = () => {
         if (remainingVotes > 0) {
-            handleResultsTabClickOnDisabled({ votes: state.votes });
+            handleResultsTabClickOnDisabled({ votesRemainingText: votesRemainingToastText });
             return;
         }
 
@@ -60,6 +64,10 @@ export const VoteCategories = () => {
         window.sa_event('see_results_button_clicked');
         updateState({ activeTab: "results" })
     }
+
+    const remainingVotesPrefix = remainingVotes > 1 ? "votes" : "vote";
+    const clearText = useLocaleString({ id: "clearVotes" });
+    const seeResultsText = useLocaleString({ id: "seeResultsBtn" });
 
     return (
         <>
@@ -87,19 +95,23 @@ export const VoteCategories = () => {
                         variant={"plain"}
                         onClick={() => clearVotes()}
                     >
-                        Clear
+                        {clearText}
                     </Button>
                 </Stack>
                 {
                     remainingVotes > 0 && (
-                        <Text
+                        <LocaleText 
+                            id="votesRemaining"
                             fontSize={"xs"}
                             color={"gray.500"}
                             fontWeight={"bold"}
                             marginBottom={8}
-                        >
-                            {remainingVotes} vote{remainingVotes > 1 ? "s" : ""} remaining
-                        </Text>)
+                            replacements={{
+                                remainingVotes: `${remainingVotes.toString()} `,
+                                prefix: remainingVotesPrefix
+                            }}
+                        />
+                        )
                 }
             </Stack>
             {
@@ -108,7 +120,7 @@ export const VoteCategories = () => {
                     gap={4}
                 >
                     {
-                        state.votes.map(category => (
+                        localeCategories.map(category => (
                             <Category
                                 key={category.id}
                                 category={category}
@@ -127,7 +139,7 @@ export const VoteCategories = () => {
                 backgroundColor="secondary"
                 onClick={handleResultClick}
             >
-                See results
+                {seeResultsText}
                 <FaArrowRight
                     color="white"
                     style={{

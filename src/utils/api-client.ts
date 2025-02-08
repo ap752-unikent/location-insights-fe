@@ -4,14 +4,16 @@ import localeCode from 'locale-code';
 type ApiClientProps = {
     url: string,
     method: string,
+    body?: any
 }
 
-const apiClient = async ({ url, method }: ApiClientProps) => {
+const apiClient = async ({ url, method, body}: ApiClientProps) => {
     const response = await fetch(url, {
         method: method,
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(body)
     });
 
     if (!response.ok) {
@@ -64,7 +66,6 @@ export const fetchBestLocation = async ({
     return responseJson;
 }
 
-//need to use env vars here
 export const fetchDistrictInsights = async (district: string) => {
     const url = `${getConfig("API_URL")}/district/${district}`
     const responseJson = await apiClient({ url, method: 'GET' });
@@ -83,6 +84,16 @@ export const fetchLocalCurrency = async () => {
     const countryCode = localeCode.getCountryCode(navigator.language);
     const url = `${getConfig("API_URL")}/internationalization/exchange-rate/${countryCode}`
     const responseJson = await apiClient({ url, method: 'GET' });
+
+    return responseJson;
+}
+
+export const fetchLocaleStrings = async ({languageCode} : {languageCode: string}) => {
+    const url = `${getConfig("API_URL")}/internationalization/localized-strings/${languageCode}`;
+    const responseJson = await apiClient({ 
+        url, 
+        method: 'GET'
+    });
 
     return responseJson;
 }

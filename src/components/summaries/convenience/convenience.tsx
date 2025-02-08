@@ -1,10 +1,10 @@
-import { Text } from "@chakra-ui/react";
 import { PlacesText } from "../../../components/places-text/places-text";
 import { DistrictInsight } from "../../../types";
 import { SummarySkeleton } from "../summary-skeleton"
 import { FaBasketShopping } from "react-icons/fa6";
 import { CgGym } from "react-icons/cg";
 import { FaUserDoctor } from "react-icons/fa6";
+import { LocaleText, useLocaleString } from "../../../contexts/internationalization";
 
 type Props = {
     districtData: DistrictInsight;
@@ -18,19 +18,23 @@ export const Convenience = ({
     const gymsAv = Math.ceil(districtData.weighted.gyms);
     const doctorsAv = Math.ceil(districtData.weighted.doctors);
 
+    const convenienceLabel = useLocaleString({ id: "convenienceLabel" });
+    const convenienceStoresText = useLocaleString({ id: "convenienceStoresText" });
+    const gymsText = useLocaleString({ id: "gymsText" });
+    const doctorsText = useLocaleString({ id: "doctorsText" });
+
     return (
         <SummarySkeleton
-            title="Convenience"
+            title={convenienceLabel}
             icon={<FaBasketShopping size={20} />}
         >
-            <Text
+            <LocaleText 
+                id="localAmenities"
                 fontSize={"sm"}
                 color={"gray.500"}
-            >
-                Looking for convenience? Here's what you can expect in terms of local amenities.
-            </Text>
+            />
             <PlacesText
-                text={`convenience store${convenienceStoresAv > 1 ? 's' : ''} within a 5 min walk.`}
+                text={convenienceStoresText}
                 icon={<FaBasketShopping
                     size={16}
                     style={{
@@ -40,7 +44,7 @@ export const Convenience = ({
                 count={convenienceStoresAv}
             />
             <PlacesText
-                text={`gym${gymsAv > 1 ? 's' : ''} rated 4 stars or above within a 15 min walk.`}
+                text={gymsText}
                 icon={<CgGym
                     size={16}
                     style={{
@@ -50,7 +54,7 @@ export const Convenience = ({
                 count={gymsAv}
             />
             <PlacesText
-                text={`gp practice${doctorsAv > 1 ? 's' : ''} rated 4 stars or above within a 15 min walk.`}
+                text={doctorsText}
                 icon={<FaUserDoctor
                     size={16}
                     style={{

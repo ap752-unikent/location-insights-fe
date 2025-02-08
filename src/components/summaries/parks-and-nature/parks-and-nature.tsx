@@ -4,6 +4,7 @@ import { Coverage } from '../../coverage/coverage';
 import { SummarySkeleton } from "../summary-skeleton";
 import { DistrictInsight } from "../../../types";
 import { MdNaturePeople } from "react-icons/md";
+import { LocaleText, useLocaleString } from "../../../contexts/internationalization";
 
 type Props = {
     districtData: DistrictInsight;
@@ -15,12 +16,15 @@ export const ParksAndNature = ({
 
     const averageGreenProportion = districtData.weighted.imageAnalysis.greenProportion;
     const averageBlueProportion = districtData.weighted.imageAnalysis.blueProportion;
-
     const parks = districtData.parks ?? [];
+
+    const parksAndNatureLabel = useLocaleString({ id: "parksAndNatureLabel" });
+    const greenSpacesText = useLocaleString({ id: "greenSpacesText" });
+    const blueSpacesText = useLocaleString({ id: "blueSpacesText" });
 
     return (
         <SummarySkeleton
-            title={"Parks and Nature"}
+            title={parksAndNatureLabel}
             icon={<FaTree />}
         >
             {
@@ -31,24 +35,23 @@ export const ParksAndNature = ({
                     />
                 ))
             }
-            <Text
+            <LocaleText 
+                id="parksAndNatureText"
                 fontSize={"sm"}
                 color={"gray.500"}
-            >
-                Like having nature on your doorstep? Here's what you can expect in terms of green and blue spaces in the neighbourhood.
-            </Text>
+            />
             <Stack
                 direction={"column"}
             >
                 <CoverageInfo
                     color={"#2E6F40"}
                     score={Number(averageGreenProportion.toFixed(0))}
-                    text={"Green spaces such as parks, gardens and nature reserves."}
+                    text={greenSpacesText}
                 />
                 <CoverageInfo
                     color={"#0047AB"}
                     score={Number(averageBlueProportion.toFixed(0))}
-                    text={"Blue spaces such as rivers, lakes and ponds."}
+                    text={blueSpacesText}
                 />
             </Stack>
         </SummarySkeleton>

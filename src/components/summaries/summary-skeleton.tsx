@@ -1,5 +1,6 @@
 import { Stack, Text} from "@chakra-ui/react"
 import { PropsWithChildren } from "react";
+import Markdown from "react-markdown";
 
 type Props = {
     title: string;
@@ -25,7 +26,10 @@ export const SummarySkeleton = (
                     flexDirection: "row"
                 }}
             >
-                {title} &nbsp; {icon}
+                <Markdown>
+                    {title}
+                </Markdown>
+                &nbsp; {icon}
             </Text>
             {children}
         </Stack>
