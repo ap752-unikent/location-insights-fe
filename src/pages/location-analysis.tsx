@@ -13,6 +13,7 @@ import { LocationAnalysisMainAnalysis } from "../components/location-analysis-ma
 import { DistrictExternalLink } from "../components/district-external-link/district-external-link";
 import { usePageState } from "../contexts/page-state";
 import { Heading } from "../components/location-result/heading";
+import { useLocaleString } from "../contexts/internationalization";
 
 export const LocationAnalysis = () => {
 
@@ -27,6 +28,10 @@ export const LocationAnalysis = () => {
     const { aggregates } = useFetchAggregates();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const returnToResults = useLocaleString({id: "returnToResults"});
+    const returnToVotes = useLocaleString({id: "returnToVotes"});
+    const exploreMoreAreas = useLocaleString({id: "exploreMoreAreas"});
 
     const isExternal = useMemo(() => {
 
@@ -46,15 +51,15 @@ export const LocationAnalysis = () => {
     const backMessage = useMemo(() => {
 
         if (isExternal) {
-            return "Explore more areas in London using our neighbourhood insights tool";
+            return exploreMoreAreas;
         }
 
         if (canGoBackToResults) {
-            return "Return to results";
+            return returnToResults;
         }
 
-        return "Return to votes";
-    }, [canGoBackToResults])
+        return returnToVotes;
+    }, [canGoBackToResults, isExternal, returnToResults, returnToVotes, exploreMoreAreas]);
 
     useEffect(() => {
         window.scrollTo(0, 0);

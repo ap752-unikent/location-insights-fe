@@ -8,6 +8,7 @@ import TubeRoundel from "../../../assets/tube-roundel";
 import NationalRail from "../../../assets/national-rail";
 import { useMemo } from "react";
 import { IoIosPartlySunny } from "react-icons/io";
+import { LocaleText, useLocaleString } from "../../../contexts/internationalization";
 
 type Props = {
     district: string;
@@ -33,9 +34,11 @@ export const TransportLinks = ({
     const averageCommuteTimeToCentralLondon = commuteTimeToCentralLondon;
     const averageTransitTimeFromCentralLondonNight = transitTimeFromCentralLondonNight;
 
+    const transportLinksLabel = useLocaleString({ id: "transportLinksLabel" });
+
     return (
         <SummarySkeleton
-            title={"Transport Links"}
+            title={transportLinksLabel}
             icon={<FaTrain />}
         >
             <Stack
@@ -53,13 +56,15 @@ export const TransportLinks = ({
                     }
                     {
                         uniqueStationTotalCount > MAX_STATION_COUNT && (
-                            <Text
+                            <LocaleText 
+                                id="extraStationCount"
                                 fontSize={"xs"}
                                 color={"gray.500"}
                                 fontWeight={"bold"}
-                            >
-                                +{uniqueStationTotalCount - MAX_STATION_COUNT} more
-                            </Text>
+                                replacements={{
+                                    extraStationCount: (uniqueStationTotalCount - MAX_STATION_COUNT).toString()
+                                }}
+                            />
                         )
                     }
                 </Stack>
@@ -80,12 +85,16 @@ export const TransportLinks = ({
                                     flexGrow: 1
                                 }}
                             />
-                            <Text
+                            <LocaleText
+                                id="commuteTimeText"
                                 fontSize={"sm"}
                                 color={"gray.500"}
                                 width={"100%"}
-                            >                            <b>Planning to commute often?</b> The average travel time from <b>{district} to Central London<sup>[1]</sup></b>, via public transport, is <b>{averageCommuteTimeToCentralLondon.toFixed(0)} minutes</b> during peak hours.
-                            </Text>
+                                replacements={{
+                                    district: `${district} `,
+                                    averageCommuteTime: `${averageCommuteTimeToCentralLondon.toFixed(0)} `
+                                }}
+                            />
                         </Stack>
                     }
                     {
@@ -101,22 +110,23 @@ export const TransportLinks = ({
                                     flexGrow: 1
                                 }}
                             />
-                            <Text
+                            <LocaleText 
+                                id="commuteTimeNightText"
                                 fontSize={"sm"}
                                 color={"gray.500"}
                                 width={"100%"}
-                            >
-                                <b>Enjoy going out out?</b> Average travel time from <b>Central London<sup>[1]</sup></b>, via public transport, at night is <b>{averageTransitTimeFromCentralLondonNight.toFixed(0)} minutes</b>.
-                            </Text>
+                                replacements={{
+                                    averageTravelTime: `${averageTransitTimeFromCentralLondonNight.toFixed(0)} `
+                                }}
+                            />
                         </Stack>
                     }
-                    <Text
+                    <LocaleText 
+                        id="centralLondonCitation"
                         fontSize={"x-small"}
                         color={"gray.500"}
                         fontWeight={"bold"}
-                    >
-                        [1] Central London is defined as Trafalgar Square.
-                    </Text>
+                    />
                 </Stack>
             </Stack>
         </SummarySkeleton >

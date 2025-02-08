@@ -1,6 +1,7 @@
 import { Stack, Text, useBreakpointValue, useToken } from '@chakra-ui/react';
 import { ProgressBar } from '../progress/progress-bar';
 import React from 'react';
+import Markdown from 'react-markdown';
 
 type ScoreProps = {
     score: number;
@@ -48,7 +49,9 @@ const IndividualScore = ({ score, label, icon}: ScoreProps) => {
                         color={"gray.500"}
                         width={200}
                     >
-                        {label}
+                        <Markdown>
+                            {label}
+                        </Markdown>
                     </Text>
                 )
             }

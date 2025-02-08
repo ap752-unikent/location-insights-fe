@@ -3,6 +3,7 @@ import { RangeChart } from "../../location-result/range-chart";
 import { Aggregates, DistrictInsight } from "../../../types";
 import { SummarySkeleton } from "../summary-skeleton"
 import { HiMiniUserGroup } from "react-icons/hi2";
+import { useLocaleString } from "../../../contexts/internationalization";
 
 type Props = {
     districtData: DistrictInsight;
@@ -18,13 +19,24 @@ export const Crime = ({
     const crimes = districtData.weighted.numberOfCrimes;
     const crimesPerCapita = districtData.weighted.crimesPerCapita;
 
+    const graphTotalCrimeString = useLocaleString({
+        id: "graphTotalCrime"
+    });
+    const graphCrimeFootfallString = useLocaleString({
+        id: "graphCrimeFootfall"
+    })
+    const crimeRateLabel = useLocaleString({id: "safetyLabel"});
+    const averageCrimeRatePerDistrictText = useLocaleString({id: "averageCrimeRatePerDistrictText"});
+    const averageCrimeRatePerDistrictFootfallText = useLocaleString({id: "averageCrimeRatePerDistrictFootfallText"});
+    const thisDistrictGraph = useLocaleString({id: "thisDistrictGraph"});
+
     if (avCrimeRate === undefined) {
         return null;
     }
 
     return (
         <SummarySkeleton
-            title={"Crime Rate"}
+            title={crimeRateLabel}
             icon={<HiMiniUserGroup
                 size={20}
             />}
@@ -33,8 +45,8 @@ export const Crime = ({
                 fontSize={"sm"}
                 color={"gray.500"}
             >
-                The graphs below show how this district compares to the London average in terms of crime rate. 
-                The graph on the right accounts for both population and footfall.
+                {graphTotalCrimeString + `\n`} 
+                {graphCrimeFootfallString}
             </Text>
             <Stack
                 direction={isSmallScreen ? "column" : "row"}
@@ -43,28 +55,26 @@ export const Crime = ({
                 marginTop={4}
             >
                 <RangeChart
-                    title="Av. crime rate per district"
+                    title={averageCrimeRatePerDistrictText}
                     topYLabel="London"
-                    bottomYLabel="This district"
+                    bottomYLabel={thisDistrictGraph}
                     bottomValue={Number(crimes.toFixed(0))}
                     max={Number(avCrimeRate.avCrimesPerDisrict.toFixed(0))}
                     unit=""
                     top={40}
                     width={"100%"}
                     height={200}
-                    left={0}
                 />
                 <RangeChart
-                    title="Av. crime rate per district per capita"
+                    title={averageCrimeRatePerDistrictFootfallText}
                     topYLabel="London"
-                    bottomYLabel="This district"
+                    bottomYLabel={thisDistrictGraph}
                     bottomValue={Number((crimesPerCapita * 1000 * 12).toFixed(0))}
                     max={Number((avCrimeRate.avCrimePerCapitaPerDistrict * 1000 * 12).toFixed(0))}
                     unit=""
                     top={40}
                     width={"100%"}
                     height={200}
-                    left={0}
                 />
             </Stack>
         </SummarySkeleton>

@@ -1,6 +1,9 @@
-import { Button, Text, Image, HStack, useBreakpointValue } from "@chakra-ui/react"
+import { Button, Image, HStack, useBreakpointValue } from "@chakra-ui/react"
 import rightmove from "../../assets/rightmove.svg";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { LocaleText } from "../../contexts/internationalization";
+
+const STRING_IDS = ["externalLinkText"];
 
 export const DistrictExternalLink = ({ district }: { district: string }) => {
     
@@ -38,15 +41,15 @@ export const DistrictExternalLink = ({ district }: { district: string }) => {
                     width={rightmoveLogoSize}
                     height={rightmoveLogoSize}
                 />
-                <Text
+                <LocaleText 
+                    id={"externalLinkText"}
+                    replacements={{ district }}
                     fontSize={fontSize}
                     color={"gray.500"}
                     marginLeft={2}
                     textWrap={"wrap"}
                     textAlign={"left"}
-                >
-                    Like the look of this area? Search for properties in <b>{district}</b> on <b>Rightmove</b>
-                </Text>
+                />
             </HStack>
             <FaExternalLinkAlt
                 style={{

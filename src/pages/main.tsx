@@ -2,10 +2,9 @@ import { useFetchBestDistrict } from "../hooks/use-fetch-best-location";
 import { Stack, useBreakpointValue, Tabs, Text, VStack } from "@chakra-ui/react"
 import "@fontsource/inter";
 import { useEffect, useMemo } from "react";
-import { TOTAL_VOTES, VOTE_IDS } from "../constants";
+import {  VOTE_IDS } from "../constants";
 import { Results } from "../components/results/results";
 import { useDebounce } from 'use-debounce';
-import { TabType } from "../types";
 import { usePageState } from "../contexts/page-state";
 import { useLocation } from "react-router-dom";
 import { VoteCategories } from "../components/vote-categories/vote-categories";
@@ -13,6 +12,8 @@ import { useVotesContext } from "../contexts/votes";
 import { useVotesToScores } from "../hooks/use-votes-to-scores";
 import { allVotesUsed } from "../utils/all-votes-used";
 import { handleResultsTabClickOnDisabled } from "../utils/handle-results-click-on-disabled";
+import { LocaleText, useLocaleString } from "../contexts/internationalization";
+import { useVotesRemainingToastText } from "../hooks/use-votes-remaining-toast-text";
 
 export const Main = () => {
 
@@ -23,6 +24,10 @@ export const Main = () => {
     const weeklyPriceThreshold = useMemo(() => budgetMonthlyDebounced / 4, [budgetMonthlyDebounced]);
     const location = useLocation();
     const allVotesUsedMem = useMemo(() => allVotesUsed({ votes }), [votes]);
+    const votesRemainingToastText = useVotesRemainingToastText(votes);
+
+    const tab1 = useLocaleString({ id: "tab1" });
+    const tab2 = useLocaleString({ id: "tab2" });
 
     useEffect(() => {
         window.scrollTo(0, scrollPosition);
@@ -48,10 +53,10 @@ export const Main = () => {
 
     const handleResultsTabClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        
+
         if (!allVotesUsedMem) {
             handleResultsTabClickOnDisabled({
-                votes
+                votesRemainingText: votesRemainingToastText
             });
             return;
         }
@@ -84,17 +89,16 @@ export const Main = () => {
                         paddingX={marginTabsX}
                         alignItems={"flex-start"}
                     >
-                        <Text
+                        <LocaleText
+                            id={"heroText"}
                             fontSize={"md"}
                             fontWeight={"bold"}
-                        >
-                            Hello there 👋 &nbsp; Lets find your perfect London neighborhood! 🏡
-                        </Text>
-                        <Text
+                        />
+                        <LocaleText
+                            id={"mainDescription"}
                             fontSize={"sm"}
                             marginBottom={4}
-                        >
-                            Assign votes to each category based on your priorities, and we'll deliver personalized, data-driven recommendations for the best districts in London that align with your lifestyle and housing preferences.                        </Text>
+                        />
                     </VStack>
                 )
             }
@@ -108,11 +112,11 @@ export const Main = () => {
                 <Tabs.List
                     marginX={marginTabsX}
                 >
-                    <Tabs.Trigger 
+                    <Tabs.Trigger
                         value="questionnaire"
                         onClick={handleVoteTabClick}
                     >
-                        Vote
+                        {tab1}
                     </Tabs.Trigger>
                     <Tabs.Trigger
                         value="results"
@@ -121,7 +125,7 @@ export const Main = () => {
                             cursor: allVotesUsedMem ? "pointer" : "not-allowed",
                         }}
                     >
-                        Results
+                        {tab2}
                     </Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="results">

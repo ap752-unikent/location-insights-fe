@@ -236,4 +236,6 @@ export const categories : VoteCategory[] = [
     }
 ]
 
+export const STRING_IDS = ["heroText", "mainDescription", "tab1", "tab2", "returnToResults", "centerMarker", "northMarker", "eastMarker", "southMarker", "westMarker", "pointsAnalysed", "externalLinkText", "averageMonthlyRentText", "compatibilityScoreText", "budgetPerMonth", "localAmenities", "graphTotalCrime", "graphCrimeFootfall", "nightlifeText", "parksAndNatureText", "extraStationCount", "commuteTimeText", "commuteTimeNightText", "centralLondonCitation", "votesRemaining"];
+
 export const TOTAL_VOTES = 6;

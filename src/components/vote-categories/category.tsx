@@ -2,6 +2,7 @@ import { Button, Stack, Text} from "@chakra-ui/react";
 import { VoteCategory } from "../../constants";
 import { FaVoteYea } from "react-icons/fa";
 import { FiMinus } from "react-icons/fi";
+import Markdown from "react-markdown";
 
 type Props = {
     category: VoteCategory;
@@ -38,7 +39,9 @@ export const Category = ({
                     fontSize={"sm"}
                     color={"gray.500"}
                 >
-                    {name}
+                    <Markdown>
+                        {name}
+                    </Markdown>
                 </Text>
             </Stack>
             <Stack

@@ -6,6 +6,7 @@ import { BiSolidDrink } from "react-icons/bi";
 import { MdRestaurant } from "react-icons/md";
 import { PiDiscoBallBold } from "react-icons/pi";
 import { PlacesText } from "../../../components/places-text/places-text";
+import { LocaleText, useLocaleString } from "../../../contexts/internationalization";
 
 type Props = {
     districtData: DistrictInsight;
@@ -19,19 +20,23 @@ export const Nightlife = ({
     const nightClubs = districtData.weighted.noOfNightClubs;
     const bars = districtData.weighted.noOfBars;
 
+    const nightlifeLabel = useLocaleString({ id: "nightlifeLabel" });
+    const barsOrPubsText = useLocaleString({ id: "barsOrPubsText" });
+    const restaurantsText = useLocaleString({ id: "restaurantsText" });
+    const nightclubsText = useLocaleString({ id: "nightclubsText" });
+
     return (
         <SummarySkeleton
-            title={"Nightlife"}
+            title={nightlifeLabel}
             icon={<MdOutlineNightlife size={20} />}
         >
-            <Text
+            <LocaleText 
+                id="nightlifeText"
                 fontSize={"sm"}
                 color={"gray.500"}
-            >
-                Enjoy a midweek pint? Or a friday night dinner out? Here's what you can expect within a 10 min walking distance for this area.
-            </Text>
+            />
             <PlacesText
-                text={"bars or pubs rated 4 stars and above"}
+                text={barsOrPubsText}
                 icon={<BiSolidDrink
                     size={16}
                     style={{
@@ -41,7 +46,7 @@ export const Nightlife = ({
                 count={Math.ceil(bars)}
             />
             <PlacesText
-                text={"restaurants rated 4 stars and above"}
+                text={restaurantsText}
                 icon={<MdRestaurant
                     style={{
                         marginRight: "12px"
@@ -51,7 +56,7 @@ export const Nightlife = ({
                 count={Math.ceil(restaurants)}
             />
             <PlacesText
-                text={"nightclubs rated 4 stars and above"}
+                text={nightclubsText}
                 icon={<PiDiscoBallBold
                     style={{
                         marginRight: "12px"

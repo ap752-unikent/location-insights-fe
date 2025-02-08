@@ -7,6 +7,7 @@ import { LocationResult } from "../location-result/location-result";
 import { usePageState } from "../../contexts/page-state";
 import { useLocalCurrency } from "../../utils/use-local-currency";
 import localeCode from "locale-code";
+import { LocaleText } from "../../contexts/internationalization";
 
 type Props = {
     districts: DistrictData[] | undefined;
@@ -55,13 +56,15 @@ export const Results = ({
                 gap={0}
                 marginX={marginX}
             >
-                <Text
+                <LocaleText 
                     fontSize={"sm"}
-                    color={"gray.500"}
                     fontWeight={"bold"}
-                >
-                    My budget is {(countryCode !== undefined && currencyData?.exchangeRate !== undefined && countryCode.toUpperCase() !== "GB") ? `${currencyValue} ${currencyData?.currency} (£${budgetMonthlyGbp})` : `£${budgetMonthlyGbp}`}  per month for one room (excluding bills)
-                </Text>
+                    color={"gray.500"}
+                    id="budgetPerMonth"
+                    replacements={{
+                        value: (countryCode !== undefined && currencyData?.exchangeRate !== undefined && countryCode.toUpperCase() !== "GB") ? `${currencyValue} ${currencyData?.currency} (£${budgetMonthlyGbp})` : `£${budgetMonthlyGbp}`
+                    }}
+                />
                 <Slider
                     fontWeight={"bold"}
                     fontSize={"xs"}
