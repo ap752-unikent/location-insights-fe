@@ -12,6 +12,19 @@ export type DistrictScores = {
     }
 }
 
+export type DistrictHighlightEnum = "parksAndNature" | "transportLinks" | "crime" | "convenience" | "nightlife" | "goodOverall";
+
+export type DistrictHighlights = {
+    districtCode: string;
+    districtName: string;
+    highlights: DistrictHighlightEnum[];
+    price: {
+        average: number;
+        min: number;
+        max: number;
+    }
+}
+
 export type PostcodeLocation = {
     postcode: string;
     latitude: number;

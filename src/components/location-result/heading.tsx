@@ -10,18 +10,18 @@ type Props = {
     districtCode: string;
     districtName: string;
     handleHeaderClick?: () => void;
+    customBorderRadius?: string;
 }
 
 const HEIGHT = 150;
 
-export const Heading = ({ districtCode, districtName, handleHeaderClick}: Props) => {
+export const Heading = ({ districtCode, districtName, handleHeaderClick, customBorderRadius}: Props) => {
 
     const borderRadius = useBreakpointValue({ base: 0, lg: "8px 8px 0 0" });
     const imageUrl = districtToImageSasUrls[districtCode] ?? districtToImageSasUrls["default"];
     const [primary] = useToken("colors", ["primary"]);
     const rgba0 = hexToRgba(primary, 0);
     const rgba1 = hexToRgba(primary, 1);
-    const navigate = useNavigate();
 
     return (
         <Stack
@@ -38,7 +38,7 @@ export const Heading = ({ districtCode, districtName, handleHeaderClick}: Props)
             />
             <Image
                 height={HEIGHT}
-                borderRadius={borderRadius}
+                borderRadius={customBorderRadius ?? borderRadius}
                 alt="response"
                 src={imageUrl}
                 objectFit={"cover"}

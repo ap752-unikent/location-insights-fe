@@ -1,78 +1,39 @@
-import { useFetchBestDistrict } from "../hooks/use-fetch-best-location";
-import { Stack, useBreakpointValue, Tabs, Text, VStack } from "@chakra-ui/react"
+import { Stack, useBreakpointValue, Text, VStack, HStack, Button } from "@chakra-ui/react"
 import "@fontsource/inter";
-import { useEffect, useMemo } from "react";
-import {  VOTE_IDS } from "../constants";
-import { Results } from "../components/results/results";
-import { useDebounce } from 'use-debounce';
-import { usePageState } from "../contexts/page-state";
-import { useLocation } from "react-router-dom";
-import { VoteCategories } from "../components/vote-categories/vote-categories";
-import { useVotesContext } from "../contexts/votes";
-import { useVotesToScores } from "../hooks/use-votes-to-scores";
-import { allVotesUsed } from "../utils/all-votes-used";
-import { handleResultsTabClickOnDisabled } from "../utils/handle-results-click-on-disabled";
-import { LocaleText, useLocaleString } from "../contexts/internationalization";
-import { useVotesRemainingToastText } from "../hooks/use-votes-remaining-toast-text";
+import { useFetchBestValueAreas } from "../hooks/use-best-value-areas";
+import { LocationCardMinimal } from "../components/location-card-minimal/location-card-minimal";
+import { FaArrowRight } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
+import { LocaleText } from "../contexts/internationalization";
+import { useLocalCurrency } from "../hooks/use-local-currency";
+import { useEffect, useRef } from "react";
 
 export const Main = () => {
 
-    const { state: { budgetMonthly, activeTab, scrollPosition }, updateState } = usePageState();
-    const [budgetMonthlyDebounced] = useDebounce(budgetMonthly, 1000);
-    const { state: { votes } } = useVotesContext();
-    const scores = useVotesToScores(votes);
-    const weeklyPriceThreshold = useMemo(() => budgetMonthlyDebounced / 4, [budgetMonthlyDebounced]);
-    const location = useLocation();
-    const allVotesUsedMem = useMemo(() => allVotesUsed({ votes }), [votes]);
-    const votesRemainingToastText = useVotesRemainingToastText(votes);
-
-    const tab1 = useLocaleString({ id: "tab1" });
-    const tab2 = useLocaleString({ id: "tab2" });
-
-    useEffect(() => {
-        window.scrollTo(0, scrollPosition);
-    }, [location, scrollPosition]);
+    const { data: bestValueAreas } = useFetchBestValueAreas();
 
     const totalWidth = useBreakpointValue({ base: "100%", lg: "50%" });
     const transform = useBreakpointValue({ base: "translateX(0%)", lg: "translateX(50%)" });
-    const marginTabsX = useBreakpointValue({ base: 4, lg: 0 });
-    const questionnaireTabX = useBreakpointValue({ base: 4, lg: 0 });
+    const pageMarginX = useBreakpointValue({ base: 4, lg: 0 });
+    const { data: currency } = useLocalCurrency();
+    const scrollPosition = useRef(0);
+    const carouselRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const { districts, districtsLoading } = useFetchBestDistrict({
-        parksAndNatureImportance: scores.find(s => s.id === VOTE_IDS.parksAndNature)?.value ?? 0,
-        transportLinksImportance: scores.find(s => s.id === VOTE_IDS.transportLinks)?.value ?? 0,
-        convenienceStoresImportance: scores.find(s => s.id === VOTE_IDS.convenienceStores)?.value ?? 0,
-        crimeImportance: scores.find(s => s.id === VOTE_IDS.safety)?.value ?? 0,
-        nightlifeImportance: scores.find(s => s.id === VOTE_IDS.nightlife)?.value ?? 0,
-        weeklyPriceThreshold: weeklyPriceThreshold
-    });
-
-    const handleSetBudgetMonthly = (value: number) => {
-        updateState({ budgetMonthly: value });
+    const handleCardClick = (districtCode: string) => {
+        navigate(`/location-analysis/${districtCode}`, {
+            state: {
+                scrollPosition: scrollPosition.current
+            }
+        });
     }
 
-    const handleResultsTabClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-
-        if (!allVotesUsedMem) {
-            handleResultsTabClickOnDisabled({
-                votesRemainingText: votesRemainingToastText
-            });
-            return;
+    useEffect(() => {
+        if(location.state?.scrollPosition && carouselRef.current) {
+            carouselRef.current.scrollLeft = location.state.scrollPosition;
         }
-
-        // @ts-ignore
-        window.sa_event('results_tab_clicked');
-        updateState({ activeTab: "results" });
-    }
-
-    const handleVoteTabClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-
-        // @ts-ignore
-        window.sa_event('vote_tab_clicked');
-        updateState({ activeTab: "questionnaire" });
-    }
+    }, [location])
 
     return (
         <Stack
@@ -81,68 +42,104 @@ export const Main = () => {
             transform={transform}
             marginTop={8}
             marginBottom={24}
+            paddingX={pageMarginX}
             fontFamily={"Inter"}
         >
+
+            <VStack
+                alignItems={"flex-start"}
+            >
+                <LocaleText 
+                    id="heroText"
+                    fontSize={"xx-large"}
+                    fontWeight={"bold"}
+                    color={"primary"}
+                />
+                <LocaleText 
+                    id="mainDescription"
+                    fontSize={"large"}
+                    marginBottom={4}
+                    color={"primary"}
+                />
+            </VStack>
             {
-                activeTab === "questionnaire" && (
+                bestValueAreas && bestValueAreas.length > 0 && (
                     <VStack
-                        paddingX={marginTabsX}
                         alignItems={"flex-start"}
+                        gap={0}
                     >
-                        <LocaleText
-                            id={"heroText"}
-                            fontSize={"md"}
+                        <LocaleText 
+                            id="bestValueAreas"
+                            fontSize={"small"}
                             fontWeight={"bold"}
+                            color={"gray.500"}
+                            paddingY={2}
                         />
-                        <LocaleText
-                            id={"mainDescription"}
-                            fontSize={"sm"}
-                            marginBottom={4}
-                        />
+                        <HStack
+                            width={"100%"}
+                            overflowX={"auto"}
+                            gap={8}
+                            paddingBottom={4}
+                            paddingLeft={1}
+                            ref={carouselRef}
+                            onScroll={(e) => scrollPosition.current = e.currentTarget.scrollLeft}
+                        >
+                            {bestValueAreas.sort((a, b) => b.highlights.length - a.highlights.length).map((area) => (
+                                <LocationCardMinimal
+                                    districtHighlights={area}
+                                    key={area.districtCode}
+                                    currency={currency}
+                                    handleCardClick={handleCardClick}
+                                />
+                            ))}
+                        </HStack>
+                        <div style={{ height: 48 }} />
+                        <MoreSpecificBtn />
                     </VStack>
                 )
             }
-            <Tabs.Root
-                width={"100%"}
-                variant={"enclosed"}
-                defaultValue={"questionnaire"}
-                value={activeTab}
-                lazyMount={true}
-            >
-                <Tabs.List
-                    marginX={marginTabsX}
-                >
-                    <Tabs.Trigger
-                        value="questionnaire"
-                        onClick={handleVoteTabClick}
-                    >
-                        {tab1}
-                    </Tabs.Trigger>
-                    <Tabs.Trigger
-                        value="results"
-                        onClick={handleResultsTabClick}
-                        style={{
-                            cursor: allVotesUsedMem ? "pointer" : "not-allowed",
-                        }}
-                    >
-                        {tab2}
-                    </Tabs.Trigger>
-                </Tabs.List>
-                <Tabs.Content value="results">
-                    <Results
-                        districts={districts}
-                        districtsLoading={districtsLoading}
-                        budgetMonthlyGbp={budgetMonthly}
-                        setBudgetMonthlyGbp={handleSetBudgetMonthly}
-                        weeklyPriceThreshold={weeklyPriceThreshold}
-                    />
-                </Tabs.Content>
-                <Tabs.Content value="questionnaire"
-                    paddingX={questionnaireTabX}
-                >
-                    <VoteCategories />
-                </Tabs.Content>
-            </Tabs.Root>
         </Stack>
+    )
+}
+
+const MoreSpecificBtn = () => {
+
+    const navigate = useNavigate();
+
+    return (
+        <Button
+            width={"100%"}
+            variant={"plain"}
+            flexDirection={"row"}
+            paddingX={0}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            onClick={() => navigate("/votes")}
+        >
+            <VStack
+                alignItems={"flex-start"}
+                gap={0}
+            >
+                <LocaleText 
+                    id="moreSpecificBtnTitle"
+                    fontSize={"md"}
+                    fontWeight={"bold"}
+                    color={"primary"}
+                />
+                <LocaleText 
+                    id="moreSpecificBtnText"
+                    fontSize={"sm"}
+                    color={"gray.500"}
+                    textWrap={"wrap"}
+                    textAlign={"left"}
+                />
+            </VStack>
+            <FaArrowRight
+                style={{
+                    width: 16,
+                    height: 16
+                }}
+            />
+        </Button>
     )
 }

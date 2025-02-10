@@ -1,17 +1,22 @@
 import React from 'react';
 import { Image, useBreakpointValue } from '@chakra-ui/react';
 import logoSidewaysBeta from '../../assets/logo-sideways-beta.png';
+import { useNavigate } from 'react-router-dom';
 
 export const Header = () => {
 
-    const isSmallScreen = useBreakpointValue({ base: true, md: false });
+    const margin = useBreakpointValue({ base: 8, md: 4 });
+    const height = useBreakpointValue({ base: 12, md: 16 });
+    const navigate = useNavigate();
 
     return (
         <Image 
-            marginTop={isSmallScreen ? 8 : 4}
-            marginLeft={isSmallScreen ? 8 : 4}
+            marginTop={margin}
+            marginLeft={margin}
             src={logoSidewaysBeta}
-            height={75}
+            height={height}
+            cursor={"pointer"}
+            onClick={() => navigate("/")}
         />
     )
 }

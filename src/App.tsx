@@ -13,6 +13,7 @@ import { Header } from './components/header/header';
 import { VotesStateProvider } from './contexts/votes';
 import { Toaster } from './components/ui/toaster';
 import { LocaleStateProvider } from './contexts/internationalization';
+import { Votes } from './pages/votes';
 
 const queryClient = new QueryClient();
 
@@ -23,11 +24,12 @@ function App() {
         <LocaleStateProvider>
           <PageStateProvider>
             <VotesStateProvider>
-              <Header />
               <Toaster />
               <Router>
+              <Header />
                 <Routes>
                   <Route path='/' element={<Main />} />
+                  <Route path='/votes' element={<Votes />} />
                   <Route path='/location-analysis/:district' element={<LocationAnalysis />} />
                 </Routes>
               </Router>

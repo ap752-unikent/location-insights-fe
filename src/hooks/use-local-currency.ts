@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
-import { fetchLocalCurrency } from "./api-client";
+import { fetchLocalCurrency } from "../utils/api-client";
 
-type LocalCurrency = {
+export type LocalCurrency = {
     exchangeRate: number;
     currency: string;
 }

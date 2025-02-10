@@ -5,7 +5,7 @@ import { DistrictData } from "../../utils/api-client";
 import { useMemo } from "react";
 import { LocationResult } from "../location-result/location-result";
 import { usePageState } from "../../contexts/page-state";
-import { useLocalCurrency } from "../../utils/use-local-currency";
+import { useLocalCurrency } from "../../hooks/use-local-currency";
 import localeCode from "locale-code";
 import { LocaleText } from "../../contexts/internationalization";
 

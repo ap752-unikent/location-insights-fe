@@ -30,18 +30,20 @@ export const LocationAnalysis = () => {
     const location = useLocation();
 
     const returnToResults = useLocaleString({id: "returnToResults"});
-    const returnToVotes = useLocaleString({id: "returnToVotes"});
+    const returnToVotes = useLocaleString({id: "returnHome"});
     const exploreMoreAreas = useLocaleString({id: "exploreMoreAreas"});
 
     const isExternal = useMemo(() => {
 
-        if(activeTab === "results") {
-            return false;
-        }
+        // if(activeTab === "results") {
+        //     return false;
+        // }
 
-        const referrer = document.referrer;
-        const isExternal = referrer && referrer.indexOf(window.location.origin) === -1;
-        return isExternal;
+        // const referrer = document.referrer;
+        // const isExternal = referrer && referrer.indexOf(window.location.origin) === -1;
+        // return isExternal;
+
+        return false; //always false for now, no ads directly linking this page
     }, []);
 
     const canGoBackToResults = useMemo(() => {
@@ -79,6 +81,16 @@ export const LocationAnalysis = () => {
     const handleBackClick = () => {
         if (isExternal) {
             navigate("/");
+            return;
+        }
+
+        if(location.state?.scrollPosition) {
+            navigate("/", {
+                state: {
+                    scrollPosition: location.state.scrollPosition
+                }
+            });
+            
             return;
         }
 
