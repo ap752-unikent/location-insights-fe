@@ -30,7 +30,7 @@ export const ExploreBtn = (
             >
                 <LocaleText 
                     id="exploreDistrictMore"
-                    fontSize={"sm"}
+                    fontSize={"xs"}
                     color={"gray.500"}
                     replacements={{
                         district: districtCode
