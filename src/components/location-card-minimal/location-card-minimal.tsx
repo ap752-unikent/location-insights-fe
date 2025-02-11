@@ -38,10 +38,10 @@ export const LocationCardMinimal = ({ districtHighlights, currency, handleCardCl
     const priceInLocalCurrency = useMemo(() => {
 
         if (!currency) {
-            return price.average;
+            return price.average * 4.3;
         }
 
-        return price.average * currency.exchangeRate;
+        return price.average * currency.exchangeRate * 4.3;
     }, [price.average, currency?.exchangeRate]);
 
     return (
