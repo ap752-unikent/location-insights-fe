@@ -98,8 +98,8 @@ export const fetchLocaleStrings = async ({languageCode} : {languageCode: string}
     return responseJson;
 }
 
-export const fetchBestValueAreas = async () => {
-    const url = `${getConfig("API_URL")}/location/best-value-areas`;
+export const fetchHighlightedAreas = async ({pathSuffix} : {pathSuffix: string}) => {
+    const url = `${getConfig("API_URL")}/location/${pathSuffix}`;
     const responseJson = await apiClient({ url, method: 'GET' });
 
     return responseJson;

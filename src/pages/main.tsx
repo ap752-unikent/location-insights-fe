@@ -1,37 +1,63 @@
 import { Stack, useBreakpointValue, Text, VStack, HStack, Button } from "@chakra-ui/react"
 import "@fontsource/inter";
-import { useFetchBestValueAreas } from "../hooks/use-best-value-areas";
-import { LocationCardMinimal } from "../components/location-card-minimal/location-card-minimal";
+import "@fontsource/montserrat";
+import { useFetchHighlightedAreas } from "../hooks/use-best-value-areas";
 import { FaArrowRight } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LocaleText } from "../contexts/internationalization";
 import { useLocalCurrency } from "../hooks/use-local-currency";
 import { useEffect, useRef } from "react";
+import { LocationCarousel } from "../components/location-carousel/location-carousel";
+
+type CarouselType = "bestValueAreas" | "youngProfessionals" | "families"
 
 export const Main = () => {
 
-    const { data: bestValueAreas } = useFetchBestValueAreas();
+    const { data: bestValueAreas } = useFetchHighlightedAreas({
+        pathSuffix: "best-value-areas"
+    });
+
+    const { data: youngProfessionalAreas } = useFetchHighlightedAreas({
+        pathSuffix: "young-professional-areas"
+    })
+
+    const { data: familyAreas } = useFetchHighlightedAreas({
+        pathSuffix: "family-areas"
+    })
 
     const totalWidth = useBreakpointValue({ base: "100%", lg: "50%" });
     const transform = useBreakpointValue({ base: "translateX(0%)", lg: "translateX(50%)" });
     const pageMarginX = useBreakpointValue({ base: 4, lg: 0 });
     const { data: currency } = useLocalCurrency();
-    const scrollPosition = useRef(0);
-    const carouselRef = useRef<HTMLDivElement>(null);
+
+    const bestValueAreasCarouselRef = useRef<HTMLDivElement>(null);
+    const youngProfessionalsCarouselRef = useRef<HTMLDivElement>(null);
+    const familyAreasCarouselRef = useRef<HTMLDivElement>(null);
+
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleCardClick = (districtCode: string) => {
         navigate(`/location-analysis/${districtCode}`, {
             state: {
-                scrollPosition: scrollPosition.current
+                scrollPositionBestValueAreas: bestValueAreasCarouselRef.current?.scrollLeft ?? 0,
+                scrollPositionYoungProfessionals: youngProfessionalsCarouselRef.current?.scrollLeft ?? 0,
+                scrollPositionFamilyAreas: familyAreasCarouselRef.current?.scrollLeft ?? 0
             }
         });
     }
 
     useEffect(() => {
-        if(location.state?.scrollPosition && carouselRef.current) {
-            carouselRef.current.scrollLeft = location.state.scrollPosition;
+        if (location.state?.scrollPositionBestValueAreas && bestValueAreasCarouselRef.current) {
+            bestValueAreasCarouselRef.current.scrollLeft = location.state.scrollPositionBestValueAreas;
+        }
+
+        if (location.state?.scrollPositionYoungProfessionals && youngProfessionalsCarouselRef.current) {
+            youngProfessionalsCarouselRef.current.scrollLeft = location.state.scrollPositionYoungProfessionals;
+        }
+
+        if (location.state?.scrollPositionFamilyAreas && familyAreasCarouselRef.current) {
+            familyAreasCarouselRef.current.scrollLeft = location.state.scrollPositionFamilyAreas;
         }
     }, [location])
 
@@ -45,17 +71,16 @@ export const Main = () => {
             paddingX={pageMarginX}
             fontFamily={"Inter"}
         >
-
             <VStack
                 alignItems={"flex-start"}
             >
-                <LocaleText 
+                <LocaleText
                     id="heroText"
                     fontSize={"xx-large"}
                     fontWeight={"bold"}
                     color={"primary"}
                 />
-                <LocaleText 
+                <LocaleText
                     id="mainDescription"
                     fontSize={"large"}
                     marginBottom={4}
@@ -68,31 +93,30 @@ export const Main = () => {
                         alignItems={"flex-start"}
                         gap={0}
                     >
-                        <LocaleText 
-                            id="bestValueAreas"
-                            fontSize={"small"}
-                            fontWeight={"bold"}
-                            color={"gray.500"}
-                            paddingY={2}
+                        <LocationCarousel
+                            localeTitleId={"youngProfessionalAreas"}
+                            districtHighlights={youngProfessionalAreas}
+                            currency={currency}
+                            handleCardClick={handleCardClick}
+                            ref={youngProfessionalsCarouselRef}
                         />
-                        <HStack
-                            width={"100%"}
-                            overflowX={"auto"}
-                            gap={8}
-                            paddingBottom={4}
-                            paddingLeft={1}
-                            ref={carouselRef}
-                            onScroll={(e) => scrollPosition.current = e.currentTarget.scrollLeft}
-                        >
-                            {bestValueAreas.sort((a, b) => b.highlights.length - a.highlights.length).map((area) => (
-                                <LocationCardMinimal
-                                    districtHighlights={area}
-                                    key={area.districtCode}
-                                    currency={currency}
-                                    handleCardClick={handleCardClick}
-                                />
-                            ))}
-                        </HStack>
+                        <div style={{ height: 32 }} />
+                        <LocationCarousel
+                            localeTitleId={"familyAreas"}
+                            districtHighlights={familyAreas}
+                            currency={currency}
+                            handleCardClick={handleCardClick}
+                            ref={familyAreasCarouselRef}
+                        />
+                        <div style={{ height: 32 }} />
+                        <LocationCarousel
+                            localeTitleId={"bestValueAreas"}
+                            districtHighlights={bestValueAreas}
+                            currency={currency}
+                            handleCardClick={handleCardClick}
+                            ref={bestValueAreasCarouselRef}
+                        />
+
                         <div style={{ height: 48 }} />
                         <MoreSpecificBtn />
                     </VStack>
@@ -120,13 +144,13 @@ const MoreSpecificBtn = () => {
                 alignItems={"flex-start"}
                 gap={0}
             >
-                <LocaleText 
+                <LocaleText
                     id="moreSpecificBtnTitle"
                     fontSize={"md"}
                     fontWeight={"bold"}
                     color={"primary"}
                 />
-                <LocaleText 
+                <LocaleText
                     id="moreSpecificBtnText"
                     fontSize={"sm"}
                     color={"gray.500"}

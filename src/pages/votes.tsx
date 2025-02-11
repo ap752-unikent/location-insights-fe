@@ -1,4 +1,5 @@
 import { Results } from "../components/results/results";
+import "@fontsource/inter";
 import { VoteCategories } from "../components/vote-categories/vote-categories";
 import { VOTE_IDS } from "../constants";
 import { LocaleText, useLocaleString } from "../contexts/internationalization";

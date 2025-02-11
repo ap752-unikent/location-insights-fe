@@ -84,13 +84,15 @@ export const LocationAnalysis = () => {
             return;
         }
 
-        if(location.state?.scrollPosition) {
+        if(location.state?.scrollPositionBestValueAreas) {
             navigate("/", {
                 state: {
-                    scrollPosition: location.state.scrollPosition
+                    scrollPositionBestValueAreas: location.state.scrollPositionBestValueAreas,
+                    scrollPositionYoungProfessionals: location.state.scrollPositionYoungProfessionals,
+                    scrollPositionFamilyAreas: location.state.scrollPositionFamilyAreas
                 }
             });
-            
+
             return;
         }
 
