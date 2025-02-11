@@ -11,7 +11,9 @@ export const DistrictExternalLink = ({ district }: { district: string }) => {
     const borderRadius = useBreakpointValue({ base: 0, lg: 8 });
     const handleClick = () => {
         // @ts-ignore
-        window.sa_event('external_link_partner')
+        window.sa_event('external_link_partner');
+        // @ts-ignore
+        window.gtag('event', 'conversion', { 'send_to': 'AW-956745982/flJvCN_oj5EaEP6Rm8gD'});
         window.open(`https://www.rightmove.co.uk/property-to-rent/${district}.html`, "_blank", 'noopener,noreferrer');
     }
     const fontSize = useBreakpointValue({ base: 14, lg: 16 });
