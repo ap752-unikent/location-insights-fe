@@ -14,6 +14,7 @@ import { VotesStateProvider } from './contexts/votes';
 import { Toaster } from './components/ui/toaster';
 import { LocaleStateProvider } from './contexts/internationalization';
 import { Votes } from './pages/votes';
+import ConsentBanner from './components/analytics-consent/analytics-consent';
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraUIProvider>
+        <ConsentBanner />
         <LocaleStateProvider>
           <PageStateProvider>
             <VotesStateProvider>

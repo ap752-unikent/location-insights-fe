@@ -6,6 +6,7 @@ import { LocationCardMinimal } from "../location-card-minimal/location-card-mini
 import { LocaleText } from "../../contexts/internationalization";
 
 type Props = {
+    id: string;
     districtHighlights: DistrictHighlights[] | undefined;
     currency: LocalCurrency | undefined;
     handleCardClick: (districtCode: string) => void;
@@ -16,7 +17,8 @@ export const LocationCarousel = forwardRef<HTMLDivElement, Props>(({
     districtHighlights,
     currency,
     handleCardClick,
-    localeTitleId
+    localeTitleId,
+    id
 }, ref) => {
 
     if (!districtHighlights) {
@@ -25,6 +27,7 @@ export const LocationCarousel = forwardRef<HTMLDivElement, Props>(({
 
     return (
         <Stack
+            id={id}
             width={"100%"}
             gap={0}
         >

@@ -3,8 +3,6 @@ import rightmove from "../../assets/rightmove.svg";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { LocaleText } from "../../contexts/internationalization";
 
-const STRING_IDS = ["externalLinkText"];
-
 export const DistrictExternalLink = ({ district }: { district: string }) => {
     
     const isSmallScreen = useBreakpointValue({ base: true, lg: false });

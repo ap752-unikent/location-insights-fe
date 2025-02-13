@@ -9,8 +9,6 @@ import { useLocalCurrency } from "../hooks/use-local-currency";
 import { useEffect, useRef } from "react";
 import { LocationCarousel } from "../components/location-carousel/location-carousel";
 
-type CarouselType = "bestValueAreas" | "youngProfessionals" | "families"
-
 export const Main = () => {
 
     const { data: bestValueAreas } = useFetchHighlightedAreas({
@@ -94,6 +92,7 @@ export const Main = () => {
                         gap={0}
                     >
                         <LocationCarousel
+                            id="youngProfessionals"
                             localeTitleId={"youngProfessionalAreas"}
                             districtHighlights={youngProfessionalAreas}
                             currency={currency}
@@ -102,6 +101,7 @@ export const Main = () => {
                         />
                         <div style={{ height: 32 }} />
                         <LocationCarousel
+                            id="families"
                             localeTitleId={"familyAreas"}
                             districtHighlights={familyAreas}
                             currency={currency}
@@ -110,6 +110,7 @@ export const Main = () => {
                         />
                         <div style={{ height: 32 }} />
                         <LocationCarousel
+                            id="bestValueAreas"
                             localeTitleId={"bestValueAreas"}
                             districtHighlights={bestValueAreas}
                             currency={currency}
