@@ -4,20 +4,19 @@ import { Heading } from "../location-result/heading";
 import { useMemo } from "react";
 import { HighlightPill } from "./highlight-pill";
 import { AveragePrice } from "./average-price";
-import { ExploreBtn } from "./explore-btn";
+import { ActionButtons } from "./action-btns";
 import { LocalCurrency } from "../../hooks/use-local-currency";
 
 type Props = {
     districtHighlights: DistrictHighlights;
     currency: LocalCurrency | undefined;
-    handleCardClick: (districtCode: string) => void;
 }
 
-export const LocationCardMinimal = ({ districtHighlights, currency, handleCardClick}: Props) => {
+export const LocationCardMinimal = ({ districtHighlights, currency}: Props) => {
     const { districtCode, districtName, highlights: rawHighlights, price } = districtHighlights;
     const borderRadius = useBreakpointValue({ base: "8px"});
     const minW = useBreakpointValue({ base: "300px", md: "300px" });
-    const height = useBreakpointValue({ base: "360px", md: "360px" });
+    const height = useBreakpointValue({ base: "400px", md: "400px" });
 
     const highlights: DistrictHighlightEnum[] = useMemo(() => {
         if (rawHighlights && rawHighlights.length < 1) {
@@ -31,7 +30,6 @@ export const LocationCardMinimal = ({ districtHighlights, currency, handleCardCl
         <Heading
             districtCode={districtCode}
             districtName={districtName}
-            handleHeaderClick={() => handleCardClick(districtCode)}
             customBorderRadius={borderRadius}
         />), [districtCode, districtName]);
 
@@ -50,12 +48,11 @@ export const LocationCardMinimal = ({ districtHighlights, currency, handleCardCl
             minW={minW}
             height={height}
             boxShadow={"md"}
-            cursor={"pointer"}
-            onClick={() => handleCardClick(districtCode)}
         >
             {heading}
             <VStack
                 padding={0}
+                paddingX={4}
                 height={"100%"}
                 justifyContent={"space-between"}
             >
@@ -64,7 +61,6 @@ export const LocationCardMinimal = ({ districtHighlights, currency, handleCardCl
                         wrap={"wrap"}
                         width={"100%"}
                         alignSelf={"flex-start"}
-                        paddingX={4}
                         marginY={2}
                     >
                         {highlights.map((highlight, index) => (
@@ -79,7 +75,7 @@ export const LocationCardMinimal = ({ districtHighlights, currency, handleCardCl
                         currencyCode={currency?.currency || "GBP"}
                      />
                 </Stack>
-                <ExploreBtn
+                <ActionButtons
                     districtCode={districtCode}
                 />
             </VStack>

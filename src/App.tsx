@@ -1,4 +1,3 @@
-import './App.css';
 import { Main } from './pages/main';
 import { Provider as ChakraUIProvider } from './components/ui/provider';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -8,6 +7,7 @@ import {
   Routes,
 } from "react-router-dom";
 import { LocationAnalysis } from './pages/location-analysis';
+import { PrivacyPolicy } from './pages/privacy-policy';
 import { PageStateProvider } from './contexts/page-state';
 import { Header } from './components/header/header';
 import { VotesStateProvider } from './contexts/votes';
@@ -22,17 +22,18 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraUIProvider>
-        <ConsentBanner />
         <LocaleStateProvider>
+          <ConsentBanner />
           <PageStateProvider>
             <VotesStateProvider>
               <Toaster />
               <Router>
-              <Header />
+                <Header />
                 <Routes>
                   <Route path='/' element={<Main />} />
                   <Route path='/votes' element={<Votes />} />
                   <Route path='/location-analysis/:district' element={<LocationAnalysis />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 </Routes>
               </Router>
             </VotesStateProvider>

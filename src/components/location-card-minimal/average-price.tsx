@@ -20,7 +20,6 @@ export const AveragePrice = ({
 
     return (
         <HStack
-            marginX={4}
             gap={4}
         >
             <IoIosCash 

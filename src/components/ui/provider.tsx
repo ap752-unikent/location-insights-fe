@@ -13,6 +13,7 @@ const customConfig = defineConfig({
       colors: {
         primary: {
           value: "#2B2D42",
+          400: { value: "rgba(43, 45, 66, 0.4)"},
         },
         secondary: {
           value: "#AA1155",
