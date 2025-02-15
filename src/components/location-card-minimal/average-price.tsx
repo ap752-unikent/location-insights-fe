@@ -21,6 +21,7 @@ export const AveragePrice = ({
     return (
         <HStack
             gap={4}
+            paddingX={3}
         >
             <IoIosCash 
                 color={primary}

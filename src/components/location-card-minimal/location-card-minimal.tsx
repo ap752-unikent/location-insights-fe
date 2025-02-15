@@ -10,13 +10,14 @@ import { LocalCurrency } from "../../hooks/use-local-currency";
 type Props = {
     districtHighlights: DistrictHighlights;
     currency: LocalCurrency | undefined;
+    handleCardClick: (districtCode: string) => void;
 }
 
-export const LocationCardMinimal = ({ districtHighlights, currency}: Props) => {
+export const LocationCardMinimal = ({ districtHighlights, currency, handleCardClick}: Props) => {
     const { districtCode, districtName, highlights: rawHighlights, price } = districtHighlights;
     const borderRadius = useBreakpointValue({ base: "8px"});
     const minW = useBreakpointValue({ base: "300px", md: "300px" });
-    const height = useBreakpointValue({ base: "400px", md: "400px" });
+    const height = useBreakpointValue({ base: "360px", md: "360px" });
 
     const highlights: DistrictHighlightEnum[] = useMemo(() => {
         if (rawHighlights && rawHighlights.length < 1) {
@@ -31,6 +32,7 @@ export const LocationCardMinimal = ({ districtHighlights, currency}: Props) => {
             districtCode={districtCode}
             districtName={districtName}
             customBorderRadius={borderRadius}
+            handleHeaderClick={() => handleCardClick(districtCode)}
         />), [districtCode, districtName]);
 
     const priceInLocalCurrency = useMemo(() => {
@@ -48,11 +50,12 @@ export const LocationCardMinimal = ({ districtHighlights, currency}: Props) => {
             minW={minW}
             height={height}
             boxShadow={"md"}
+            onClick={() => handleCardClick(districtCode)}
+            cursor={"pointer"}
         >
             {heading}
             <VStack
                 padding={0}
-                paddingX={4}
                 height={"100%"}
                 justifyContent={"space-between"}
             >
@@ -62,6 +65,7 @@ export const LocationCardMinimal = ({ districtHighlights, currency}: Props) => {
                         width={"100%"}
                         alignSelf={"flex-start"}
                         marginY={2}
+                        paddingX={3}
                     >
                         {highlights.map((highlight, index) => (
                             <HighlightPill
