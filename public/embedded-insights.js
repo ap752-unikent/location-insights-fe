@@ -14,7 +14,7 @@ const fetchInsights = async () => {
     container.id = "househop-scout-embedded-insights";
 
     const respKeys = Object.keys(humanReadableInsights);
-    let innerHTML = "<ul style='list-style: none; padding: 0;'>"
+    let innerHTML = "<ul style='list-style: none; padding: 0; display:flex; flex-direction:column; gap:12px'>"
 
     for (const key of respKeys) {
         const value = humanReadableInsights[key];
@@ -24,8 +24,8 @@ const fetchInsights = async () => {
             continue;
         }
 
-        const emoji = value.slice(0, 2);
-        const text = value.slice(2, value.length)
+        const emoji = value.emoji
+        const text = value.text
 
         innerHTML += `<li style='display:flex; align-items:center; gap:16px;'><span>${emoji}</span><span>${text}</span></li>`
     }
