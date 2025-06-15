@@ -46,7 +46,7 @@ export const HighlightPill = ({ highlight } : Props) => {
             <Text
                 fontSize={"x-small"}
                 fontWeight="semibold"
-                color="primary"
+                color="primary.950"
             >
                 <Markdown>
                     {highlightText}

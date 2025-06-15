@@ -15,6 +15,7 @@ import { Toaster } from './components/ui/toaster';
 import { LocaleStateProvider } from './contexts/internationalization';
 import { Votes } from './pages/votes';
 import ConsentBanner from './components/analytics-consent/analytics-consent';
+import { BestAreas } from './pages/best-areas';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ function App() {
                 <Header />
                 <Routes>
                   <Route path='/' element={<Main />} />
+                  <Route path='/best-areas' element={<BestAreas />} />
                   <Route path='/votes' element={<Votes />} />
                   <Route path='/location-analysis/:district' element={<LocationAnalysis />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />

@@ -8,6 +8,7 @@ import { LocaleText } from "../contexts/internationalization";
 import { useLocalCurrency } from "../hooks/use-local-currency";
 import { useEffect, useRef } from "react";
 import { LocationCarousel } from "../components/location-carousel/location-carousel";
+import { StepsItem, StepsList, StepsRoot } from "../components/ui/steps";
 
 export const Main = () => {
 
@@ -45,20 +46,6 @@ export const Main = () => {
         });
     }
 
-    useEffect(() => {
-        if (location.state?.scrollPositionBestValueAreas && bestValueAreasCarouselRef.current) {
-            bestValueAreasCarouselRef.current.scrollLeft = location.state.scrollPositionBestValueAreas;
-        }
-
-        if (location.state?.scrollPositionYoungProfessionals && youngProfessionalsCarouselRef.current) {
-            youngProfessionalsCarouselRef.current.scrollLeft = location.state.scrollPositionYoungProfessionals;
-        }
-
-        if (location.state?.scrollPositionFamilyAreas && familyAreasCarouselRef.current) {
-            familyAreasCarouselRef.current.scrollLeft = location.state.scrollPositionFamilyAreas;
-        }
-    }, [location])
-
     return (
         <Stack
             direction={"column"}
@@ -68,6 +55,7 @@ export const Main = () => {
             marginBottom={24}
             paddingX={pageMarginX}
             fontFamily={"Inter"}
+            gap={24}
         >
             <VStack
                 alignItems={"flex-start"}
@@ -76,95 +64,68 @@ export const Main = () => {
                     id="heroText"
                     fontSize={"xx-large"}
                     fontWeight={"bold"}
-                    color={"primary"}
+                    color={"primary.950"}
                 />
-                <LocaleText
-                    id="mainDescription"
+                <Text
                     fontSize={"large"}
                     marginBottom={4}
-                    color={"primary"}
-                />
+                    color={"primary.950"}
+                >
+                    There isn’t one neighbourhood that’s <b>'the best'</b>, but there is one that’s <b>the best for you!</b> Find an area that matches <b>your lifestyle and budget.</b>
+                </Text>
+                <Button
+                    colorPalette={"primary"}
+                    variant={"solid"}
+                    onClick={() => navigate("/best-areas")}
+                >
+                    Discover Your Ideal London Neighbourhood
+                    <FaArrowRight
+                        style={{
+                            marginLeft: 16,
+                            width: 16
+                        }}
+                    />
+                </Button>
             </VStack>
-            {
-                bestValueAreas && bestValueAreas.length > 0 && (
-                    <VStack
-                        alignItems={"flex-start"}
-                        gap={0}
-                    >
-                        <LocationCarousel
-                            id="youngProfessionals"
-                            localeTitleId={"youngProfessionalAreas"}
-                            districtHighlights={youngProfessionalAreas}
-                            currency={currency}
-                            handleCardClick={handleCardClick}
-                            ref={youngProfessionalsCarouselRef}
-                        />
-                        <div style={{ height: 32 }} />
-                        <LocationCarousel
-                            id="families"
-                            localeTitleId={"familyAreas"}
-                            districtHighlights={familyAreas}
-                            currency={currency}
-                            handleCardClick={handleCardClick}
-                            ref={familyAreasCarouselRef}
-                        />
-                        <div style={{ height: 32 }} />
-                        <LocationCarousel
-                            id="bestValueAreas"
-                            localeTitleId={"bestValueAreas"}
-                            districtHighlights={bestValueAreas}
-                            currency={currency}
-                            handleCardClick={handleCardClick}
-                            ref={bestValueAreasCarouselRef}
-                        />
-
-                        <div style={{ height: 48 }} />
-                        <MoreSpecificBtn />
-                    </VStack>
-                )
-            }
-        </Stack>
-    )
-}
-
-const MoreSpecificBtn = () => {
-
-    const navigate = useNavigate();
-
-    return (
-        <Button
-            width={"100%"}
-            variant={"plain"}
-            flexDirection={"row"}
-            paddingX={0}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            onClick={() => navigate("/votes")}
-        >
             <VStack
                 alignItems={"flex-start"}
-                gap={0}
+                gap={4}
             >
-                <LocaleText
-                    id="moreSpecificBtnTitle"
-                    fontSize={"md"}
+                <Text
+                    fontSize={"x-large"}
                     fontWeight={"bold"}
-                    color={"primary"}
-                />
-                <LocaleText
-                    id="moreSpecificBtnText"
-                    fontSize={"sm"}
-                    color={"gray.500"}
-                    textWrap={"wrap"}
-                    textAlign={"left"}
-                />
+                    color={"primary.950"}
+                >
+                    How It Works
+                </Text>
+                <StepsRoot
+                    height="400px"
+                    defaultValue={1}
+                    count={3}
+                    colorPalette={"primary"}
+                    orientation={"vertical"}
+                >
+                    <StepsList
+                        height={250}
+                    >
+                        <StepsItem
+                            index={0}
+                            title="Tell Us What Matters to You"
+                            description="Prioritise your preferences, such as transport links, parks, and nightlife."
+                        />
+                        <StepsItem 
+                            index={1} 
+                            title="Get Matched to the Best Areas"
+                            description="We compare over 300 neighbourhoods to find the ones that best match your preferences." 
+                        />
+                        <StepsItem 
+                            index={2} 
+                            title="View Properties That Fit Your Needs"
+                            description="Browse properties in the areas that match your lifestyle and budget." 
+                        />
+                    </StepsList>
+                </StepsRoot>
             </VStack>
-            <FaArrowRight
-                style={{
-                    width: 16,
-                    height: 16
-                }}
-            />
-        </Button>
+        </Stack>
     )
 }

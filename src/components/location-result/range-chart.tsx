@@ -47,7 +47,7 @@ export const RangeChart = ({
         }
     }, [topYLabel, bottomYLabel]);
 
-    const [primary, secondary] = useToken("colors", ["primary", "secondary"]);
+    const [primary, secondary] = useToken("colors", ["primary.950", "secondary"]);
     const priceRangeData = [
         {
             "x": min,

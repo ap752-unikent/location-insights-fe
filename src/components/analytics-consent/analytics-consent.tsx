@@ -51,7 +51,7 @@ const ConsentBanner = () => {
             right={0}
             padding={4}
             width={"100%"}
-            backgroundColor={"primary"}
+            backgroundColor={"primary.950"}
             color={"white"}
             justifyContent={"center"}
             zIndex={1000}

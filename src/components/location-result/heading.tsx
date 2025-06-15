@@ -19,7 +19,7 @@ export const Heading = ({ districtCode, districtName, handleHeaderClick, customB
 
     const borderRadius = useBreakpointValue({ base: 0, lg: "8px 8px 0 0" });
     const imageUrl = districtToImageSasUrls[districtCode] ?? districtToImageSasUrls["default"];
-    const [primary] = useToken("colors", ["primary"]);
+    const [primary] = useToken("colors", ["primary.950"]);
     const rgba0 = hexToRgba(primary, 0);
     const rgba1 = hexToRgba(primary, 1);
 

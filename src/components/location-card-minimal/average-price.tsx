@@ -13,7 +13,7 @@ export const AveragePrice = ({
     currencyCode
 } : Props) => {
 
-    const [primary] = useToken("colors", ["primary"]);
+    const [primary] = useToken("colors", ["primary.950"]);
     const priceFormatted = useMemo(() => {
         return `${averagePrice.toFixed(0)} ${currencyCode}`;
     }, [averagePrice]);
